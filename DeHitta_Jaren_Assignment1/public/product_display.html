@@ -1,0 +1,51 @@
+<script src="./product_data.json">
+console.log(products);
+</script>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Smart Phone Store</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
+
+    <link href="product_style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <h1>Nintendo Switch Game Store</h1>
+    </header>
+    <div>
+        <aside>
+            <div style="font-size:4rem;text-align:center;font-weight: bold;font-style: italic; color: white">
+                Come Join The Hype Train!
+            </div>
+        </aside>
+
+        <main>
+
+            <script>
+                for (i = 1; i <= num_items; i++) {
+                    document.write(`
+                <section class="item">
+                    <h2>${eval('game' + i)}</h2>
+                    <p>${eval('price' + i)}</p>
+                    <img src="{eval('image' + i)}">
+                </section>
+                `)
+                }
+            </script>
+        </main>
+    </div>
+    <footer>
+        <h1>
+            We Have All The Best Games Available!
+        </h1>
+    </footer>
+</body>
+
+</html>

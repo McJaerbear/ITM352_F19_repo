@@ -1,0 +1,24 @@
+
+documtent.write(`
+<table style="border: 1px solid black;text-align: center;">
+    <tr style="border: 1px solid black;">
+        <th style="border: 1px solid black;">Product #</th>
+        <th>Quanity</th>
+    </tr>
+    `);
+    for (i=0; i<product_quantities.length; i++){
+    document.write(`
+    <tr style="border: 1px solid black;">
+        <td style="border: 1px solid black;">1</td>
+        <td>0</td>
+    </tr>
+    <tr style="border: 1px solid black;">
+        <td style="border: 1px solid black;">2</td>
+        <td>4</td>
+    </tr>
+    <tr style="border: 1px solid black;">
+        <td style="border: 1px solid black;">${i + 1}</td>
+        <td>${product_quantities}</td>
+    </tr>
+`); }
+document.write(`</table>`)
