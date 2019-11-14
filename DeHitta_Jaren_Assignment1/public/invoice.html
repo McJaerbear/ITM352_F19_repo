@@ -6,12 +6,10 @@
     if (params.has('purchase_submit')) {
         for (i = 0; i < products.length; i++) {
             if (params.has(`quantity${i}`)) {
-                a_qty = params.get(`quantity${i}`); 
+                a_qty = params.get(`quantity${i}`);
                 quantities[i] = a_qty;
             }
         }
-    } else {
-        document.write('no form submitted');
     }
     console.log(quantities);
 </script>
@@ -21,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Nintendo Switch Game Store Receipt</title>
-    <link href="product-style.css" rel="stylesheet"> 
+    <link href="product-style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -41,6 +39,7 @@
 
                 //define subtotal
                 subtotal = 0;
+                //get products information for each from the array to compute
                 for (i = 0; i < products.length; i++) {
                     if (quantities[i] > 0) {
                         //product row
@@ -78,7 +77,7 @@
                 var grandtotal = subtotal + tax + shipping;
 
       //borrowed code from Invoice WOD  Assignment 1 example
-      //below displays subtotal, tax, shipping, and total
+      //below displays subtotal, tax, shipping, and total with two decimal points
             </script>
             <tr>
                 <td colspan="4" width="100%">&nbsp;</td>
@@ -116,11 +115,12 @@
             </tr>
         </tbody>
     </table>
+    
     <footer>
         <h1>
             Enjoy Your New Game!
         </h1>
-    </footer>
+    </footer>   
 </body>
 
 </html>

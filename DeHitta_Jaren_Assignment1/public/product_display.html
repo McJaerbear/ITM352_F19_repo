@@ -1,7 +1,7 @@
 <script src="./product.js"></script>
 
 <script>
-   //borrowed code from Assignment 1 example
+    //borrowed code from Assignment 1 example
     function isNonNegInt(q, return_errors = false) {
         errors = []; // assume no errors at first
         if (q == '') q = 0; // handle blank inputs as if they are 0
@@ -12,10 +12,10 @@
     }
 
     function checkQuantityTextbox(theTextbox) {
-        errs = isNonNegInt(theTextbox.value, true);
-        if (errs.length == 0) errs = ['Quantity:'];
-        if (theTextbox.value.trim() == '') errs = ['Quantity:'];
-        document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
+        errs = isNonNegInt(theTextbox.value, true); //if non neagtive integer, then data is valie
+        if (errs.length == 0) errs = ['Quantity:']; //when typing in the textbox, this will display 
+        if (theTextbox.value.trim() == '') errs = ['Quantity:']; //the label to the left of the texbox
+        document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", "); 
     }
 
     window.onload = function () {
@@ -41,7 +41,7 @@
                 alert("Please enter only valid quantities!");
             } else if (total_qty == 0) { // no quantity selections, just give a general alert
                 alert("Please select quantities!");
-            } else { // all good to go!
+            } else { // all good to go! will go to invoice page when everything is good to go
                 window.location = `./invoice.html${document.location.search}`;
                 window.stop;
             }
@@ -54,7 +54,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Nintendo Switch Game Store</title>
+    <title>Nintendo Switch Games Store</title>
 
     <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
 
@@ -62,19 +62,21 @@
 </head>
 
 <body>
-    
+
     <form name="product_selection_form" action="process_page" method="GET">
         <header>
-            <h1>Nintendo Switch Game Store</h1>
+            <h1>Nintendo Switch Games Store</h1>
         </header>
         <div>
             <main id="products_main_display">
-               <script>
+                <script>
+                    //will take data from the variable product from product.js array
+                    //will show "game", "image", "price", and a quantity textbox labeled Quantity
                     for (i = 0; i < products.length; i++) {
                         document.write(`
-                            <img src="${products[i].image}">
-                        <h2>$${products[i].price}</h2> 
-                        <h2>${products[i].game}</h2>                 
+                        <h2>${products[i].game}</h2>   
+                        <img src="${products[i].image}">
+                        <h2>$${products[i].price}</h2>             
                         <div>
                         <label id="quantity${i}_label"}">Quantity:</label>
                                 <input type="text" placeholder="0" name="quantity${i}" 
@@ -82,13 +84,14 @@
                         </div>
                                 `)
                     }
+                    //below is the purchase button, when pressed it will submit the information
                 </script>
                 <strong><input type="submit" value="Purchase!" name="purchase_submit"></strong>
             </main>
         </div>
         <footer id="display_footer">
             <h1>
-                We Have The Best Games Available
+                We Have The Best Games Available!
             </h1>
         </footer>
     </form>
@@ -96,4 +99,3 @@
 </body>
 
 </html>
-

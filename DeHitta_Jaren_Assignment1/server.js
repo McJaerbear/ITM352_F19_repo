@@ -1,7 +1,7 @@
-const querystring = require('querystring'); //require that the server responds to any errors
+const querystring = require('querystring'); //require that the server responds to any errors used in Line 35
 
 var express = require('express'); //express package
-var myParser = require("body-parser");
+var myParser = require("body-parser"); //require parser used in Line 14
 var products = require("./public/product.js"); //take data from products.js in the public folder
 
 //borrowed code from Lab13
@@ -37,7 +37,7 @@ app.get("/process_page", function (request, response) {
       if (has_errors || total_qty == 0) {
          //if quantity data is not valid, send them back to product display
          qstr = querystring.stringify(request.query);
-         response.redirect("product_display.html?" + qstr); 
+         response.redirect("product_display.html?" + qstr);
          //if quantity data is valid, send an invoice
       } else { //all good to go!
          response.redirect("invoice.html?" + qstr);
