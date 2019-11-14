@@ -54,7 +54,7 @@ main, table {
     padding-bottom: 75px;
     padding-left: 75px;
 	height: auto;
-    width: 600px;
+    width: 800px;
 }
 
 /* invoice table size and background */
@@ -92,4 +92,9 @@ input[type=submit] {
     font-size: 20px;
     color: blue;
     float: none;
+  }
+
+/* add space between div elements: product image and quantity textbox */
+  div {
+      padding-bottom: 20px;
   }

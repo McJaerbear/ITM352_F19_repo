@@ -75,10 +75,9 @@
                     for (i = 0; i < products.length; i++) {
                         document.write(`
                         <h2>${products[i].game}</h2>   
-                        <img src="${products[i].image}">
-                        <h2>$${products[i].price}</h2>             
-                        <div>
-                        <label id="quantity${i}_label"}">Quantity:</label>
+                        <h2>$${products[i].price}</h2>
+                        <div><img src="${products[i].image}"></div>           
+                        <div><label id="quantity${i}_label"}">Quantity:</label>
                                 <input type="text" placeholder="0" name="quantity${i}" 
                                 onkeyup="checkQuantityTextbox(this);">         
                         </div>
@@ -86,7 +85,9 @@
                     }
                     //below is the purchase button, when pressed it will submit the information
                 </script>
+                <div>
                 <strong><input type="submit" value="Purchase!" name="purchase_submit"></strong>
+                </div>
             </main>
         </div>
         <footer id="display_footer">
