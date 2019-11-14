@@ -1,178 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
+<script src="./product.js" type=""></script>
+<script>
+    let params = (new URL(document.location)).searchParams;
+    //getting the quantity amount from product.js for each data inputted
+    var quantities = [];
+    if (params.has('purchase_submit')) {
+        for (i = 0; i < products.length; i++) {
+            if (params.has(`quantity${i}`)) {
+                a_qty = params.get(`quantity${i}`); 
+                quantities[i] = a_qty;
+            }
+        }
+    } else {
+        document.write('no form submitted');
+    }
+    console.log(quantities);
+</script>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Nintendo Switch Game Store Receipt</title>
+    <link href="product-style.css" rel="stylesheet"> 
 </head>
-<header>
-    <h1>Nintendo Switch Game Store</h1>
-</header>
- <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
 
-    <link href="product-style.css" rel="stylesheet">
-    <script>
-       
-        //Product 1
-        var item1 = 'Super Smash Bros';
-        var quantity1 = '';
-        var price1 = 50;
-
-        //Product 2
-        var item2 = 'Xenoblade Chronicles 2'
-        var quantity2 = '';
-        var price2 = 45;
-
-        //Product 3
-        var item3 = 'Zelda BOTW';
-        var quantity3 = '';
-        var price3 = 40;
-
-        //Product 4
-        var item4 = 'Super Mario Oddysey';
-        var quantity4 = '';
-        var price4 = 40;
-
-        //Product 5
-        var item5 = 'Ring Fit Adventure';
-        var quantity5 = '';
-        var price5 = 70;
-
-        //Define subtotal
-        var subtotal = 0;
-
-        document.write(`
+<body>
+    <header>
+        <h1>Invoice Receipt</h1>
+    </header>
     <table border="2">
-      <tbody>
+        <tbody>
+            <tr id="invoice">
+                <th style="text-align: center;" width="43%">Item</th>
+                <th style="text-align: center;" width="11%">Quantity</th>
+                <th style="text-align: center;" width="13%">Price</th>
+                <th style="text-align: center;" width="54%">Extended Price</th>
+            </tr>
+            <script>
+                //above is the labels for the table
+
+                //define subtotal
+                subtotal = 0;
+                for (i = 0; i < products.length; i++) {
+                    if (quantities[i] > 0) {
+                        //product row
+                        //compute extended_price
+                        extended_price = quantities[i] * products[i].price
+                        //compute subtotal
+                        subtotal += extended_price;
+                        //writes out the product data from the product array
+                        document.write(`
         <tr>
-          <th style="text-align: center;" width="43%">Product</th>
-          <th style="text-align: center;" width="11%">Quantity</th>
-          <th style="text-align: center;" width="13%">Price</th>
-          <th style="text-align: center;" width="54%">Extended Price</th>
+          <td width="43%">${products[i].game}</td>
+          <td align="center" width="11%">${quantities[i]}</td>
+          <td width="13%">\$${products[i].price}</td>
+          <td width="54%">\$${extended_price}</td>
         </tr>
         `);
+                    }
+                }
+                //compute tax
+                var tax_rate = .04712;
+                var tax = tax_rate * subtotal;
 
-        //Compute extended price of item1
-        var extended_price = price1 * quantity1;
+                //calculate shipping
+                if (subtotal <= 100) {
+                    shipping = 5; //shipping is $5 if subtotal is less than or equal to 100
+                }
+                else if (subtotal <= 250) {
+                    shipping = 2; //shipping is $2 if subtotal is less than or equal to 250
+                }
+                else {
+                    shipping = 0; //free shipping if greater than 250
+                }
 
-        //Compute running subtotal
-        var subtotal = extended_price;
+                // compute grand total 
+                var grandtotal = subtotal + tax + shipping;
 
-        document.write(`
-        <tr>
-          <td width="43%">Super Smash Bros</td>
-          <td align="center" width="11%">${quantity1}</td>
-          <td width="13%">$\n${price1}</td>
-          <td width="54%">$\n${extended_price.toFixed(2)}</td>
-        </tr>
-        `);
-
-        //Compute extended price of item2
-        extended_price = price2 * quantity2;
-
-        //Compute running subtotal
-        subtotal += extended_price;
-
-        document.write(`
-        <tr>
-          <td width="43%">Xenoblade Chronicles 2</td>
-          <td align="center" width="11%">${quantity2}</td>
-          <td width="13%">$\n${price2}</td>
-          <td width="54%">$\n${extended_price.toFixed(2)}</td>
-        </tr>
-        `);
-
-        //compute extended price of item3
-        extended_price = price3 * quantity3;
-
-        //compute running subtotal
-        subtotal += extended_price;
-
-        document.write(`
-        <tr>
-          <td width="43%">Zelda BOTW</td>
-          <td align="center" width="11%">${quantity3}</td>
-          <td width="13%">$\n${price3}</td>
-          <td width="54%">$\n${extended_price.toFixed(2)}</td>
-        </tr>
-        `);
-
-        //compute extended price of item4
-        extended_price = price4 * quantity4;
-
-        //compute running subtotal
-        subtotal += extended_price;
-
-        document.write(`
-        <tr>
-          <td width="43%">Super Mario Oddysey</td>
-          <td align="center" width="11%">${quantity4}</td>
-          <td width="13%">$\n${price4}</td>
-          <td width="54%">$\n${extended_price.toFixed(2)}</td>
-        </tr>
-        `);
-
-        //compute extended price of item5
-        extended_price = price5 * quantity5;
-
-        //compute running subtotal
-        subtotal += extended_price;
-        document.write(`
-        <tr>
-          <td width="43%">Ring Fit Adventure</td>
-          <td align="center" width="11%">${quantity5}</td>
-          <td width="13%">$\n${price5}</td>
-          <td width="54%">$\n${extended_price.toFixed(2)}</td>
-        </tr>
-        `);
-
-        //compute tax
-        var tax_rate = .04712;
-        var tax = tax_rate * subtotal;
-
-        //calculate shipping
-        if (subtotal <= 100) {
-            shipping = 5;
-            }
-        else if (subtotal <=200) {
-            shipping = 2;
-        }
-        else { 
-            shipping = 0; //free shipping if greater than 200
-        }
-
-        //compute total
-        var total = subtotal + tax + shipping;
-
-        document.write(`
-        <tr>
-          <td colspan="4" width="100%">&nbsp;</td>
-        </tr>
-        <tr>
-          <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
-          <td width="54%">$\n${subtotal.toFixed(2)}</td>
-        </tr>
-        <tr>
-          <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @ 5.75%</span></td>
-          <td width="54%">$\n${tax.toFixed(2)}</td>
-        </tr>
-        <tr>
-          <td style="text-align: center;" colspan="3" width="67%">Shipping</td>
-          <td width="54%">$\n${shipping.toFixed(2)}</td>
-        </tr>
-          <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
-          <td width="54%"><strong>$\n${total.toFixed(2)}</strong></td>
-        </tr>
-      </tbody>
+      //borrowed code from Invoice WOD  Assignment 1 example
+      //below displays subtotal, tax, shipping, and total
+            </script>
+            <tr>
+                <td colspan="4" width="100%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" colspan="3" width="67%">Sub-Total</td>
+                <td width="54%">$
+                    <script>document.write(subtotal.toFixed(2));</script>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" colspan="3" width="67%">Tax</span></td>
+                <td width="54%">$
+                    <script>document.write(tax.toFixed(2));</script>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" colspan="3" width="67%">Shipping</span></td>
+                <td width="54%">$
+                    <script>document.write(shipping.toFixed(2));</script>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
+                <td width="54%"><strong>$
+                        <script>document.write(grandtotal.toFixed(2));</script></strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;" colspan="5" width="121%"><strong>
+                        OUR SHIPPING POLICY: <br>
+                        Subtotals less than $100 will be charged $5 shipping. <br>
+                        Subtotals between $100 - $200 will be charged $2 shipping. <br>
+                        Subtotals over $200 will be have free shipping. <br>
+                    </strong></td>
+            </tr>
+        </tbody>
     </table>
-    `);
-    </script>
-  <body>
-      <footer id="display_footer">
-            <h1>
-                We Have The Best Games Available
-            </h1>
-        </footer>
-      </body>
+    <footer>
+        <h1>
+            Enjoy Your New Game!
+        </h1>
+    </footer>
+</body>
+
+</html>
