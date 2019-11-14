@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -5,49 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+</head>
+<header>
+    <h1>Nintendo Switch Game Store</h1>
+</header>
+ <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
+
+    <link href="product-style.css" rel="stylesheet">
     <script>
        
-        //product 1
-        var item1 = 'Gillette Sensor 3 Razor';
-        var quantity1 = 2
-        var price1 = 1.23;
+        //Product 1
+        var item1 = 'Super Smash Bros';
+        var quantity1 = '';
+        var price1 = 50;
 
-        // product 2
-        var item2 = 'Barbasol Shaving Cream';
-        var quantity2 = 1;
-        var price2 = 2.64;
+        //Product 2
+        var item2 = 'Xenoblade Chronicles 2'
+        var quantity2 = '';
+        var price2 = 45;
 
-        //product 3
-        var item3 = 'Nautica Cologne';
-        var quantity3 = 1;
-        var price3 = 6.17;
+        //Product 3
+        var item3 = 'Zelda BOTW';
+        var quantity3 = '';
+        var price3 = 40;
 
-        //product 4
-        var item4 = 'Rubbing Alcohol';
-        var quantity4 = 3;
-        var price4 = 0.98;
+        //Product 4
+        var item4 = 'Super Mario Oddysey';
+        var quantity4 = '';
+        var price4 = 40;
 
-        //product 5
-        var item5 = 'Colgate Classic Toothbrush';
-        var quantity5 = 12;
-        var price5 = 1.89;
+        //Product 5
+        var item5 = 'Ring Fit Adventure';
+        var quantity5 = '';
+        var price5 = 70;
+
+        //Define subtotal
         var subtotal = 0;
 
-        // document.write(total.toFixed(2)); 
-        /*
-           document.write(
-               item1, quantity1, price1, extended_price1,
-               item2, quantity2, price2, extended_price2,
-               item3, quantity3, price3, extended_price3,
-               item4, quantity4, price4, extended_price4,
-               item5, quantity5, price5, extended_price5);
-           document.write("Subtotal = " + subtotal);
-           document.write("Tax @ 5.75% = " + tax.toFixed(2));
-           document.write('<b>' + "Total = " + '</b>' + '<b>' + total.toFixed(2) + '</b>');
-       */
-        // Table
         document.write(`
-    
     <table border="2">
       <tbody>
         <tr>
@@ -58,30 +54,30 @@
         </tr>
         `);
 
-        //compute extended price of item1
+        //Compute extended price of item1
         var extended_price = price1 * quantity1;
 
-        //compute running subtotal
+        //Compute running subtotal
         var subtotal = extended_price;
 
         document.write(`
         <tr>
-          <td width="43%">Gillette Sensor 3 Razor</td>
+          <td width="43%">Super Smash Bros</td>
           <td align="center" width="11%">${quantity1}</td>
           <td width="13%">$\n${price1}</td>
           <td width="54%">$\n${extended_price.toFixed(2)}</td>
         </tr>
         `);
 
-        //compute extended price of item2
-        extended_price = (price2 * quantity2);
+        //Compute extended price of item2
+        extended_price = price2 * quantity2;
 
-        //compute running subtotal
+        //Compute running subtotal
         subtotal += extended_price;
 
         document.write(`
         <tr>
-          <td width="43%">Barbasol Shaving Cream</td>
+          <td width="43%">Xenoblade Chronicles 2</td>
           <td align="center" width="11%">${quantity2}</td>
           <td width="13%">$\n${price2}</td>
           <td width="54%">$\n${extended_price.toFixed(2)}</td>
@@ -89,14 +85,14 @@
         `);
 
         //compute extended price of item3
-        extended_price = (price3 * quantity3);
+        extended_price = price3 * quantity3;
 
         //compute running subtotal
         subtotal += extended_price;
 
         document.write(`
         <tr>
-          <td width="43%">Nautica Cologne</td>
+          <td width="43%">Zelda BOTW</td>
           <td align="center" width="11%">${quantity3}</td>
           <td width="13%">$\n${price3}</td>
           <td width="54%">$\n${extended_price.toFixed(2)}</td>
@@ -104,14 +100,14 @@
         `);
 
         //compute extended price of item4
-        extended_price = (price4 * quantity4);
+        extended_price = price4 * quantity4;
 
         //compute running subtotal
         subtotal += extended_price;
 
         document.write(`
         <tr>
-          <td width="43%">Rubbing Alcohol</td>
+          <td width="43%">Super Mario Oddysey</td>
           <td align="center" width="11%">${quantity4}</td>
           <td width="13%">$\n${price4}</td>
           <td width="54%">$\n${extended_price.toFixed(2)}</td>
@@ -119,13 +115,13 @@
         `);
 
         //compute extended price of item5
-        extended_price = (price5 * quantity5);
+        extended_price = price5 * quantity5;
 
         //compute running subtotal
         subtotal += extended_price;
         document.write(`
         <tr>
-          <td width="43%">Colgate Classic Toothbrush</td>
+          <td width="43%">Ring Fit Adventure</td>
           <td align="center" width="11%">${quantity5}</td>
           <td width="13%">$\n${price5}</td>
           <td width="54%">$\n${extended_price.toFixed(2)}</td>
@@ -133,12 +129,23 @@
         `);
 
         //compute tax
-        var tax_rate = .0575;
+        var tax_rate = .04712;
         var tax = tax_rate * subtotal;
 
+        //calculate shipping
+        if (subtotal <= 100) {
+            shipping = 5;
+            }
+        else if (subtotal <=200) {
+            shipping = 2;
+        }
+        else { 
+            shipping = 0; //free shipping if greater than 200
+        }
+
         //compute total
-        var total = subtotal + tax;
-        
+        var total = subtotal + tax + shipping;
+
         document.write(`
         <tr>
           <td colspan="4" width="100%">&nbsp;</td>
@@ -152,11 +159,20 @@
           <td width="54%">$\n${tax.toFixed(2)}</td>
         </tr>
         <tr>
+          <td style="text-align: center;" colspan="3" width="67%">Shipping</td>
+          <td width="54%">$\n${shipping.toFixed(2)}</td>
+        </tr>
           <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
           <td width="54%"><strong>$\n${total.toFixed(2)}</strong></td>
         </tr>
       </tbody>
     </table>
-    
     `);
     </script>
+  <body>
+      <footer id="display_footer">
+            <h1>
+                We Have The Best Games Available
+            </h1>
+        </footer>
+      </body>
