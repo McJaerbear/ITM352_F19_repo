@@ -54,7 +54,7 @@ main, table {
     padding-bottom: 75px;
     padding-left: 75px;
 	height: auto;
-    width: 800px;
+    width: 700px;
 }
 
 /* invoice table size and background */
@@ -78,8 +78,8 @@ h2 {
 /* size of product images */
  img {
      /* image size */
-    width: 200px;
-    height: 300px; 
+    width: 350px;
+    height: 500px; 
     /* image border stlye */
     border-style: solid;
     border-width: 4px;
@@ -97,4 +97,9 @@ input[type=submit] {
 /* add space between div elements: product image and quantity textbox */
   div {
       padding-bottom: 20px;
+  }
+
+  body > div { /* > only affect div's nested in body */
+    border: 5px solid black;
+    display: flex;
   }
