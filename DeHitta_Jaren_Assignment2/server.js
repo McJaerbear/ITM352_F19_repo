@@ -1,7 +1,8 @@
 const querystring = require('querystring'); //require that the server responds to any errors used in Line 35
 
+var fs = require('fs');
 var express = require('express'); //express package
-var myParser = require("body-parser"); //require parser used in Line 14
+var myParser = require("body-parser"); //takes query string
 var products = require("./public/product.js"); //take data from products.js in the public folder
 
 //borrowed code from Lab13
@@ -11,10 +12,11 @@ app.all('*', function (request, response, next) {
    next();
 });
 
-app.use(myParser.urlencoded({ extended: true }));
+//borrowed from Lab14
+fs = require('fs'); //loads the node.js file system module
 
 //parially borrowed code from Assignment1 example
-// intercept purchase submission form, if good give an invoice, otherwise send back to order page
+//intercept purchase submission form, if good give an invoice, otherwise send back to order page
 app.get("/process_page", function (request, response) {
    // check if quantity data is valid
    params = request.query;
@@ -31,6 +33,7 @@ app.get("/process_page", function (request, response) {
             }
          }
       }
+      console.log(has_errors, total_qty);
       //request to look at query list/data
       qstr = querystring.stringify(request.query);
       //now respond to errors or redirect to invoice if all is ok
@@ -40,16 +43,10 @@ app.get("/process_page", function (request, response) {
          response.redirect("product_display.html?" + qstr);
          //if quantity data is valid, send an invoice
       } else { //all good to go!
-         response.redirect("invoice.html?" + qstr);
+         response.redirect("login.html?" + qstr);
       }
    }
 });
-
-// if quantity data valid, send them to the invoice
-// borrowed code from Lab13
-app.use(express.static('./public'));
-app.listen(8080, () => console.log(`listening on port 8080`));
-
 
 // checking that data is valid
 // borrowed code from Lab13/Assigment1
@@ -61,3 +58,7 @@ function isNonNegInt(q, returnErrors = false) {
    if (parseInt(q) != q) errors.push('Not an integer!'); // Check that it is an integer
    return returnErrors ? errors : (errors.length == 0);
 }
+
+//borrowed code from Lab13
+app.use(express.static('./public'));
+app.listen(8080, () => console.log(`listening on port 8080`));
