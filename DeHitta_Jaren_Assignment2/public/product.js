@@ -1,0 +1,32 @@
+products =
+[
+    {
+        "game": "Super Smash Bros",
+        "price": 50.00,
+        "image": "./images/ssb.jpg"
+    },
+    {
+        "game": "Xenoblade Chronicles 2",
+        "price": 45.00,
+        "image": "./images/xc2.jpg"
+    },
+    {
+        "game": "Zelda Breath of the Wild",
+        "price": 40.00,
+        "image": "./images/botw.jpg"
+    },
+    {
+        "game": "Mario Kart 8 Deluxe",
+        "price": 40.00,
+        "image": "./images/mk8d.jpg"
+    },
+    {
+        "game": "Ring Fit Adventure",
+        "price": 70.00,
+        "image": "./images/rfa.jpg"
+    }
+];
+
+if(typeof module != 'undefined') {
+    exports.products = products;
+}
