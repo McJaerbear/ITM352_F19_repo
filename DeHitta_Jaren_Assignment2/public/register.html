@@ -68,18 +68,19 @@ input[type=submit] {
 </head>
 <body>
 
-<h3>Login</h3>
+<h3>Register</h3>
+<p>It's quick and easy!</p>
 
 <div class="container">
     <form action="process_registration" method="POST">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" placeholder="Enter Username" required>
 
-    <label for="psw">Password</label>
-    <input type="password" id="psw" name="psw" placeholder="Enter Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
 
-    <label for="confirm_password">Password</label>
-    <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter Password" required>
+    <label for="password_confirmation">Password</label>
+    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Re-enter Password" required>
 
     <label for="email">Email</label>
     <input type="email" name="email" size="40" placeholder="Enter Email"><br />
@@ -97,7 +98,7 @@ input[type=submit] {
 </div>
 
 <script>
-var myInput = document.getElementById("psw");
+var myInput = document.getElementById("password");
 var letter = document.getElementById("letter");
 var capital = document.getElementById("capital");
 var number = document.getElementById("number");
@@ -153,7 +154,6 @@ myInput.onkeyup = function() {
     length.classList.remove("valid");
     length.classList.add("invalid");
   }
-
 }
 </script>
 
