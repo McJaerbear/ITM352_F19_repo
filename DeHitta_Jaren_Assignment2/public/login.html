@@ -1,89 +1,107 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-/* borrowed from w3schools.com */
-/* https://www.w3schools.com/howto/howto_js_password_validation.asp */
-/* Style all input fields */
-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* borrowed from w3schools.com */
+    /* https://www.w3schools.com/howto/howto_js_password_validation.asp */
+    /* Style all input fields */
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-top: 6px;
+      margin-bottom: 16px;
+    }
 
-/* Style the submit button */
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-}
+    /* Style the submit button */
+    input[type=submit] {
+      background-color: #4CAF50;
+      color: white;
+    }
 
-/* Style the container for inputs */
-.container {
-  background-color: #f1f1f1;
-  padding: 20px;
-}
+    /* Style the container for inputs */
+    .container {
+      background-color: #f1f1f1;
+      padding: 20px;
+    }
 
-/* The message box is shown when the user clicks on the password field */
-#message {
-  display:none;
-  background: #f1f1f1;
-  color: #000;
-  position: relative;
-  padding: 20px;
-  margin-top: 10px;
-}
+    /* The message box is shown when the user clicks on the password field */
+    #message {
+      display: none;
+      background: #f1f1f1;
+      color: #000;
+      position: relative;
+      padding: 20px;
+      margin-top: 10px;
+    }
 
-#message p {
-  padding: 10px 35px;
-  font-size: 18px;
-}
+    #message p {
+      padding: 10px 35px;
+      font-size: 18px;
+    }
 
-/* Add a green text color and a checkmark when the requirements are right */
-.valid {
-  color: green;
-}
+    /* Add a green text color and a checkmark when the requirements are right */
+    .valid {
+      color: green;
+    }
 
-.valid:before {
-  position: relative;
-  left: -35px;
-  content: "✔";
-}
+    .valid:before {
+      position: relative;
+      left: -35px;
+      content: "✔";
+    }
 
-/* Add a red text color and an "x" when the requirements are wrong */
-.invalid {
-  color: red;
-}
+    /* Add a red text color and an "x" when the requirements are wrong */
+    .invalid {
+      color: red;
+    }
 
-.invalid:before {
-  position: relative;
-  left: -35px;
-  content: "✖";
-}
-</style>
+    .invalid:before {
+      position: relative;
+      left: -35px;
+      content: "✖";
+    }
+  </style>
+  <script src="./product.js"></script>
+  <script>
+    let params = (new URL(document.location)).searchParams; //searching for params in a new URL document location
+    if (params.has("LoginError")) {
+      alert(params.get("LoginError"));
+    }
+  </script>
 </head>
+
 <body>
 
-<h3>Login</h3>
+  <h3>Login</h3>
+  <p>Login to continue with purchase.</p>
 
-<div class="container">
-  <form action="" method="POST">
-    <label for="usrname">Username</label>
-    <input type="text" id="username" name="username" required>
+  <form name="login" method="POST">
 
-    <label for="psw">Password</label>
-    <input type="password" id="psw" name="psw" required>
+    <div class="container">
+      <form action="" method="POST">
+        <label for="usrname">Username</label>
+        <input type="text" id="username" name="username" required>
 
-    <input type="submit" value="Submit" id="submit">
-  </form>
-</div>
+        <label for="psw">Password</label>
+        <input type="password" id="psw" name="psw" required>
 
-</script>   
-<a href = "register.html"> Click here to register </a>
+        <input type="submit" value="Submit" id="submit">
+      </form>
+    </div>
+
+    </script>
+    <a href="register.html"> Click here to register </a>
+
+    <script>
+      //links with quantity data to pass onto the next page
+      login.action = "./login" + document.location.search; 
+    </script>
+
 </body>
-</html>
 
+</html>

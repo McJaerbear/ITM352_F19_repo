@@ -99,7 +99,7 @@ app.post("/register", function (request, response) {
     users_reg_data[username] = {};
     users_reg_data[username].password = request.body.password;
     //add repeat_password
-    users_reg_data[username].email = request.body.emal;
+    users_reg_data[username].email = request.body.email;
 
     //turns into a json string file
     fs.writeFileSync(filename, JSON.stringify(users_reg_data));
