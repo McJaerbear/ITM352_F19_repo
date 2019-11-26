@@ -72,6 +72,18 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
 
    users_reg_data = JSON.parse(data) //will convert data (string) into an object or an array
 
+/*
+   //creates new user
+   username = request.body.username;
+   users_reg_data[username] = {};
+   users_reg_data[username].password = request.body.password;
+   //add repeat_password
+   users_reg_data[username].email = request.body.email;
+
+   //turns into a json string file
+   fs.writeFileSync(filename, JSON.stringify(users_reg_data));
+*/
+
    console.log(users_reg_data);
    //will show grader since that's the password for itm352 user
    //has to follow identifier rueles
@@ -112,22 +124,9 @@ app.post("/register", function (request, response) {
    
    //all good, so save the new user
 
-   //creates new user
-   username = request.body.username;
-   users_reg_data[username] = {};
-   users_reg_data[username].password = request.body.password;
-   //add repeat_password
-   users_reg_data[username].email = request.body.email;
-
-   //turns into a json string file
-   fs.writeFileSync(filename, JSON.stringify(users_reg_data));
-
    response.send(`${username} registered!`)
    //Line 61-68 add for part C of Exercise#4 lab4
-
-  
 });
-
 
 //borrowed code from Lab13
 app.use(express.static('./public'));
