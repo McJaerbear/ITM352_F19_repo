@@ -24,7 +24,15 @@
 
 <body>
     <header>
-        <h1>Invoice Receipt</h1>
+        <script>
+            //to get username (for personalization in the invoice)
+            //still needs to be tested out
+            usr= GET[`fullname`];
+            document.write(`
+            <h1>Hello there, ${usr}</h1>
+          `)
+          </script>
+          <h1>Invoice Receipt</h1>
     </header>
     <table border="2">
         <tbody>

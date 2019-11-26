@@ -96,6 +96,16 @@ app.post("/register", function (request, response) {
 
     //creates new user
     username = request.body.username;
+
+//checks to see if username already exists
+ errors = [];
+//if array stays empty move on
+if (typeof users_reg_data[username] != 'undefined'){
+errors.push("Username is Taken");
+}
+console.log(errors, users_reg_data);
+if (errors.length == 0){
+
     users_reg_data[username] = {};
     users_reg_data[username].password = request.body.password;
     //add repeat_password
@@ -106,7 +116,12 @@ app.post("/register", function (request, response) {
 
     response.send(`${username} registered!`)
     //Line 61-68 add for part C of Exercise#4 lab4
-});
+    response.redirect("/login");
+} else {
+    response.redirect("/register");
+}
+    
+ });
 
 //PUT APP.USE STATIC HERE FOR ASSIGNMENT2
 app.listen(8080, () => console.log(`listening on port 8080`));

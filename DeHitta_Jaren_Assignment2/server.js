@@ -86,11 +86,9 @@ app.post("/login", function (request, response) {
    //process login form POST and redirect to logged in page if ok, back to login page if not
    //if I have post, below will load
    console.log(request.body)
-   var qstring = querystring.stringify(request.query);
    the_username = request.body.username;
    console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
 
-   
    //validate login data
    if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
        if (users_reg_data[the_username].password == request.body.password) {
@@ -126,6 +124,8 @@ app.post("/register", function (request, response) {
 
    response.send(`${username} registered!`)
    //Line 61-68 add for part C of Exercise#4 lab4
+
+  
 });
 
 
