@@ -4,6 +4,7 @@ var fs = require('fs');
 var express = require('express'); //express package; allows us to use tools from express
 var myParser = require("body-parser"); //takes query string
 var products = require("./public/product.js"); //take data from products.js in the public folder
+var qs = require('querystring');
 
 //borrowed code from Lab13
 var app = express();
@@ -12,7 +13,7 @@ app.all('*', function (request, response, next) {
    next();
 });
 
-//parially borrowed code from Assignment1 example
+//borrowed code from Assignment1 example
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
 app.get("/process_page", function (request, response) {
    // check if quantity data is valid
@@ -94,18 +95,38 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
    //ex:if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
+var user_product_quantities = {};
+app.get("/purchase", function (request, response) {
+   //quantity data in query string
+   user_product_quantities = request.query;
+   console.log(user_product_quantities);
+   //do validation
+
+   //if not valid go back to products display
+
+   //otherwise go to login
+   response.redirect('login');
+});
+
+/*
+app.get("/invoice", function (request, response) {
+
+   response.send(JSON.stringify(user_product_quantities));
+});
+*/
+
 app.post("/login", function (request, response) {
    //process login form POST and redirect to logged in page if ok, back to login page if not
    //if I have post, below will load
-   console.log(request.body)
+   console.log(user_product_quantities);
    the_username = request.body.username;
    console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
-
    //validate login data
    if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
        if (users_reg_data[the_username].password == request.body.password) {
-           response.send(theusername + 'loggged in!');
-           //for Assignment 2, should send them to the invoice and make sure to keep the quantity data
+            //make the query string of product quantity needed for invoice
+            theQuantQuerystring = qs.stringify(user_product_quantities);
+           response.redirect('/invoice?' + theQuantQuerystring); 
            //add their username in the invoice so that they know they're logged in (for personalization)
        } else {
            response.redirect('/login'); 
@@ -124,7 +145,7 @@ app.post("/register", function (request, response) {
    
    //all good, so save the new user
 
-   response.send(`${username} registered!`)
+   response.redirect('/invoice?' + theQuantQuerystring); 
    //Line 61-68 add for part C of Exercise#4 lab4
 });
 
