@@ -2,6 +2,18 @@
 <script>
     let params = (new URL(document.location)).searchParams; //searching for params in a new URL document location
     //getting the quantity amount from product.js for each data inputted
+    
+    //pop-up message when usccesful login occurs 
+    //will show up before loading to invoice.html
+    if(params.has('username')){ //
+        alert(`thank you for your purchase ${params.get('username')}`);
+    }
+    //send message that they must login or register before they can be sent to the invoice
+    else{
+        alert('you must login or register first');
+        window.location = 'login.html';
+        window.stop();
+    }
     var quantities = [];
     if (params.has('purchase_submit')) {
         for (i = 0; i < products.length; i++) {
@@ -15,7 +27,7 @@
 </script>
 
 <script>
-document.write(location.search);
+document.write(location.search); //needed?
 </script>
 
 <head>
@@ -130,7 +142,11 @@ document.write(location.search);
     
     <footer>
         <h1>
-            Enjoy Your New Game!
+            <script>
+                //personalize username
+                //params.get means get username, which is defined in the server
+                document.write(`Enjoy Your New Game ${params.get('username')}!`);
+                </script> 
         </h1>
     </footer>   
 </body>

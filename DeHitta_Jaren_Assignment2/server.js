@@ -13,10 +13,13 @@ app.all('*', function (request, response, next) {
    next();
 });
 
+var user_product_quantities = {};
 //borrowed code from Assignment1 example
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
 app.get("/process_page", function (request, response) {
-   // check if quantity data is valid
+   //quantity data in query string
+   user_product_quantities = request.query;
+   //check if quantity data is valid
    params = request.query;
    console.log(params);
    if (typeof params['purchase_submit'] != 'undefined') {
@@ -46,8 +49,8 @@ app.get("/process_page", function (request, response) {
    }
 });
 
-// checking that data is valid
-// borrowed code from Lab13/Assigment1
+//checking that data is valid
+//borrowed code from Lab13/Assigment1
 function isNonNegInt(q, returnErrors = false) {
    errors = []; // assume no errors at first
    if (q == "") { q = 0; }
@@ -73,18 +76,6 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
 
    users_reg_data = JSON.parse(data) //will convert data (string) into an object or an array
 
-/*
-   //creates new user
-   username = request.body.username;
-   users_reg_data[username] = {};
-   users_reg_data[username].password = request.body.password;
-   //add repeat_password
-   users_reg_data[username].email = request.body.email;
-
-   //turns into a json string file
-   fs.writeFileSync(filename, JSON.stringify(users_reg_data));
-*/
-
    console.log(users_reg_data);
    //will show grader since that's the password for itm352 user
    //has to follow identifier rueles
@@ -95,27 +86,7 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
    //ex:if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
-var user_product_quantities = {};
-app.get("/purchase", function (request, response) {
-   //quantity data in query string
-   user_product_quantities = request.query;
-   console.log(user_product_quantities);
-   //do validation
-
-   //if not valid go back to products display
-
-   //otherwise go to login
-   response.redirect('login');
-});
-
-/*
-app.get("/invoice", function (request, response) {
-
-   response.send(JSON.stringify(user_product_quantities));
-});
-*/
-
-app.post("/login", function (request, response) {
+app.post("/login.html", function (request, response) {
    //process login form POST and redirect to logged in page if ok, back to login page if not
    //if I have post, below will load
    console.log(user_product_quantities);
@@ -123,30 +94,71 @@ app.post("/login", function (request, response) {
    console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
    //validate login data
    if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
-       if (users_reg_data[the_username].password == request.body.password) {
-            //make the query string of product quantity needed for invoice
-            theQuantQuerystring = qs.stringify(user_product_quantities);
-           response.redirect('/invoice?' + theQuantQuerystring); 
-           //add their username in the invoice so that they know they're logged in (for personalization)
-       } else {
-           response.redirect('/login'); 
-           //if username doesn't exist then return to login page
-           //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
-       }
+      if (users_reg_data[the_username].password == request.body.password) {
+         //make the query string of product quantity needed for invoice
+         theQuantQuerystring = qs.stringify(user_product_quantities);
+         response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
+         //add their username in the invoice so that they know they're logged in (for personalization)
+      } else {
+         response.redirect('login.html'); //if username doesn't exist then return to login page 
+         //make username sticky (i.e., stay in page when redirected)
+         //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
+      }
    }
 });
 
-//THIS IS WHAT WE GOT FROM LAB14 FOR REGISTRATION BUT NOT SURE WHAT TO ADD
-app.post("/register", function (request, response) {
+app.post("/register.html", function (request, response) {
    //process a simple register form
 
    //validate registration data (add validation code for Assignment2)
    //validation includes # of characters, capitalization of letters, confirm password by typing it a second time (repeat_password)
-   
-   //all good, so save the new user
+   has_errors = false;
+   //if all good, so save the new user, then redirect to invoice otherwise bounce back to register
 
-   response.redirect('/invoice?' + theQuantQuerystring); 
-   //Line 61-68 add for part C of Exercise#4 lab4
+   //do validation
+   
+   //need to validate username length + case sentsitivity
+   //need to validate pass word lenght + one capital letter minimu + numbers (I think) 
+      //make sure it matches what's in register.html
+      //if can't figure out something, can always take it out of required field for password in register.html
+   //need to validate passord_cofirmation is the same as password
+   //need to validate email?
+
+
+   //I think I can use what's written below...
+   /*
+      //creates new user
+      username = request.body.username;
+      users_reg_data[username] = {};
+      users_reg_data[username].password = request.body.password;
+      //add repeat_password
+      users_reg_data[username].email = request.body.email;
+   
+      //turns into a json string file
+      fs.writeFileSync(filename, JSON.stringify(users_reg_data));
+   */
+
+
+   if (has_errors == false) {
+      // NEED TO save registration data to file
+
+      //I think he said I can use what's below but just changeg data in the pharanthesis ot something else but I forgot...
+      //then change fs.readFileSync to fs.writeFileSync
+      
+      /*
+      data = fs.readFileSync(filename, 'utf-8'); //read the file synchronously until the file comes back
+
+      users_reg_data = JSON.parse(data) //will convert data (string) into an object or an array
+      */
+   
+      //make the query string of product quantity needed for invoice
+      theQuantQuerystring = qs.stringify(user_product_quantities);
+      response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
+      //add their username in the invoice so that they know they're logged in (for personalization)
+   } else {
+      response.redirect('register.html'); //if username doesn't exist then return to registration page
+      //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
+   }
 });
 
 //borrowed code from Lab13
