@@ -17,7 +17,8 @@ var user_product_quantities = {};
 //borrowed code from Assignment1 example
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
 app.get("/process_page", function (request, response) {
-
+   //quantity data in query string
+   user_product_quantities = request.query;
    //check if quantity data is valid
    params = request.query;
    console.log(params);
