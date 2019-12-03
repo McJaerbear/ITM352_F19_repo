@@ -1,3 +1,5 @@
+//server to work with validation experiments
+
 const querystring = require('querystring'); //require that the server responds to any errors used in Line 35
 
 var fs = require('fs');
@@ -99,7 +101,8 @@ app.post("/login.html", function (request, response) {
          theQuantQuerystring = qs.stringify(user_product_quantities);
          response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
          //add their username in the invoice so that they know they're logged in (for personalization)
-      } else {
+      } 
+      else {
          response.redirect('login.html'); //if username doesn't exist then return to login page 
          //make username sticky (i.e., stay in page when redirected)
          //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
@@ -113,7 +116,129 @@ app.post("/register.html", function (request, response) {
    //validate registration data (add validation code for Assignment2)
    //validation includes # of characters, capitalization of letters, confirm password by typing it a second time (repeat_password)
    
+   let INFO = request.body;
+//makes the username case-insensitive
+ username = INFO.Username.toLowerCase();
+
+   //Resest Errors in string so them dont carry over if user messes up multiple 
    
+//setting text elements
+var username = document.forms['vform']['username'];
+var email = document.forms['vform']['email'];
+var password = document.forms['vform']['password'];
+var password_confirm = document.forms['vform']['password_confirm'];
+
+//sellecting all error display elements
+var name_error = document.getElementById('name_error');
+var email_error = document.getElementById('email_error');
+var password_error = document.getElementById('password_error');
+
+//setting all event listeners
+username.addEventListener('blur', nameVerify, true);
+email.addEventListener('blur', emailVerify, true);
+password.addEventListener('blur', passwordVerify, true);
+
+//validation function
+function Validate() {
+ //validate username; required
+ if (username.value == "") {
+   username.style.border = "1px solid red";
+   document.getElementById('username_div').style.color = "red";
+   name_error.textContent = "Username is required";
+   username.focus();
+   return false;
+ }
+ //validate username; length (minimum 5 characters and maximum 20 characters) - works
+ if (username.value.length < 5) {
+   username.style.border = "1px solid red";
+   document.getElementById('username_div').style.color = "red";
+   name_error.textContent = "Username must be at least 5 characters";
+   username.focus();
+   return false;
+ }
+ if (username.value.length > 20) {
+    username.style.border = "1px solid red";
+    document.getElementById('username_div').style.color = "red";
+    name_error.textContent = "Username must be less than 20 characters";
+    username.focus();
+    return false;
+  }
+ //check if username exists
+  //toLowerCase function: https://www.w3schools.com/jsref/jsref_tolowercase.asp
+  var reguser = req.body.username.toLowerCase(); //make username user enters case insensitive
+  if (typeof users_reg_data[reguser] != 'undefined') { //if the username is already defined in the registration data
+    usererrors.push('Username taken')
+  }
+ //validate email; required
+ if (email.value == "") {
+   email.style.border = "1px solid red";
+   document.getElementById('email_div').style.color = "red";
+   email_error.textContent = "Email required";
+   email.focus();
+   return false;
+ }
+
+ //VALIDATING NOT WORKING
+//validate password; required
+ if (password.value == "") {
+   password.style.border = "1px solid red";
+   document.getElementById('password_div').style.color = "red";
+   password_confirm.style.border = "1px solid red";
+   password_error.textContent = "Password required";
+   password.focus();
+   return false;
+ }
+ //validate password; length 
+ if (password.value.length > 8) {
+    username.style.border = "1px solid red";
+    document.getElementById('username_div').style.color = "red";
+    name_error.textContent = "Username must be at least 5 characters";
+    username.focus();
+    return false;
+  }
+
+ //check if the two passwords match
+ if (password.value != password_confirm.value) {
+   password.style.border = "1px solid red";
+   document.getElementById('pass_confirm_div').style.color = "red";
+   password_confirm.style.border = "1px solid red";
+   password_error.innerHTML = "Password do not match";
+   return false;
+ }
+}
+
+//event handler functions
+function nameVerify() {
+ if (username.value != "") {
+  username.style.border = "1px solid #5e6e66";
+  document.getElementById('username_div').style.color = "#5e6e66";
+  name_error.innerHTML = "";
+  return true;
+ }
+}
+function emailVerify() {
+ if (email.value != "") {
+    email.style.border = "1px solid #5e6e66";
+    document.getElementById('email_div').style.color = "#5e6e66";
+    email_error.innerHTML = "";
+    return true;
+ }
+}
+function passwordVerify() {
+ if (password.value != "") {
+    password.style.border = "1px solid #5e6e66";
+    document.getElementById('pass_confirm_div').style.color = "#5e6e66";
+    document.getElementById('password_div').style.color = "#5e6e66";
+    password_error.innerHTML = "";
+    return true;
+ }
+ if (password.value === password_confirm.value) {
+    password.style.border = "1px solid #5e6e66";
+    document.getElementById('pass_confirm_div').style.color = "#5e6e66";
+    password_error.innerHTML = "";
+    return true;
+ }
+}
    has_errors = false;
    //if all good, so save the new user, then redirect to invoice otherwise bounce back to register
 

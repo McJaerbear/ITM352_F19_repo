@@ -98,17 +98,19 @@
 
   <div id="message">
     <h3>Password must contain the following:</h3>
-    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-    <p id="number" class="invalid">A <b>number</b></p>
     <p id="length" class="invalid">Minimum <b>8 characters</b></p>
   </div>
 
   <script>
+/* //messages when typing out password if want to add
+    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+    <p id="number" class="invalid">A <b>number</b></p>
+*/
     var myInput = document.getElementById("password");
     var letter = document.getElementById("letter");
-    var capital = document.getElementById("capital");
-    var number = document.getElementById("number");
+   /* var capital = document.getElementById("capital"); */
+   /* var number = document.getElementById("number"); */
     var length = document.getElementById("length");
 
     // When the user clicks on the password field, show the message box
