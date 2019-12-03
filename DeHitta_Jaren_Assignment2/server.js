@@ -86,6 +86,7 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
    //ex:if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
+//DONE
 app.post("/login.html", function (request, response) {
    //process login form POST and redirect to logged in page if ok, back to login page if not
    //if I have post, below will load
@@ -99,69 +100,177 @@ app.post("/login.html", function (request, response) {
          theQuantQuerystring = qs.stringify(user_product_quantities);
          response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
          //add their username in the invoice so that they know they're logged in (for personalization)
-      } else {
-         response.redirect('login.html'); //if username doesn't exist then return to login page 
-         //make username sticky (i.e., stay in page when redirected)
-         //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
-      }
+      } error = "Invalid Password"; //if password does not exist
    }
-});
+   else {
+      error = the_username + " Username does not exist"; //if username does not exit, will show messaeg
+   }
+   request.query.LoginError = error;
+   //makes username sticky whenever they come back to login page??
+   request.query.StickyLoginUser = the_username;
+   qstring = querystring.stringify(request.query);
+   response.redirect("login.html");//if username doesn't exist then return to login page 
+}
+);
 
+
+//DATA SAVES INTO QUERY STRING BUT DOES NOT GO TO THE INVOICE PAGE
+//ALSO DOESN'T TRANSFER DATA FROM PURCHASE IF NOT SAVED IN VS CODE FIRST BEFORE LOGING IN
+//VALIDATION DOESN'T SHOW
+//IT SAYS I MUST LOGIN OR REGISTER FIRST THEN PROCEEDS TO LOAD TO A BLANK SCREEN
 app.post("/register.html", function (request, response) {
-   //process a simple register form
+   qstr = request.body
+   console.log(qstr);
+ 
+   //validate registration data
+   //create an array to store errors
+   var name_errors = [];
+   var user_errors = [];
+   var pass_errors = [];
+   var confirm_errors = [];
+   var email_errors = [];
+ 
+   haserrors = false;
 
-   //validate registration data (add validation code for Assignment2)
-   //validation includes # of characters, capitalization of letters, confirm password by typing it a second time (repeat_password)
-   
-   
-   has_errors = false;
-   //if all good, so save the new user, then redirect to invoice otherwise bounce back to register
-
-   //do validation
-   
-   //need to validate username length + case sentsitivity
-   //need to validate pass word lenght + one capital letter minimu + numbers (I think) 
-      //make sure it matches what's in register.html
-      //if can't figure out something, can always take it out of required field for password in register.html
-   //need to validate passord_cofirmation is the same as password
-   //need to validate email?
-
-
-   //I think I can use what's written below...
-   /*
-      //creates new user
-      username = request.body.username;
-      users_reg_data[username] = {};
-      users_reg_data[username].password = request.body.password;
-      //add repeat_password
-      users_reg_data[username].email = request.body.email;
-   
-      //turns into a json string file
-      fs.writeFileSync(filename, JSON.stringify(users_reg_data));
-   */
-
-
-   if (has_errors == false) {
-      // NEED TO save registration data to file
-
-      //I think he said I can use what's below but just changeg data in the pharanthesis ot something else but I forgot...
-      //then change fs.readFileSync to fs.writeFileSync
-      
-      /*
-      data = fs.readFileSync(filename, 'utf-8'); //read the file synchronously until the file comes back
-
-      users_reg_data = JSON.parse(data) //will convert data (string) into an object or an array
-      */
-   
-      //make the query string of product quantity needed for invoice
-      theQuantQuerystring = qs.stringify(user_product_quantities);
-      response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
-      //add their username in the invoice so that they know they're logged in (for personalization)
-   } else {
-      response.redirect('register.html'); //if username doesn't exist then return to registration page
-      //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
+   //name validation
+   //make sure name is valid
+   if (request.body.name == "") {
+     name_errors.push('Invalid Full Name');
    }
+
+   if ((request.body.name.length > 30)) {  //make sure that full name has no more than 30 characters
+     name_errors.push('Full Name Too Long')
+   }
+
+   //make sure full name contains only letters
+   //Code for Validating Letters only: https://www.w3resource.com/javascript/form/all-letters-field.php
+   if (/^[A-Za-z]+$/.test(request.body.name)) {
+   }
+   else {
+     name_errors.push('Use Letters Only for Full Name')
+   }
+
+   //username must have a minimum of 5 characters and maximum of 15 characters
+   //borrowed from https://crunchify.com/javascript-function-to-validate-username-phone-fields-on-form-submit-event/
+   if ((request.body.username.length < 5)) { //if username is less than 4 characters, push an error
+     user_errors.push('Username Too Short')
+   }
+   if ((request.body.username.length > 15)) { //if username length greater than 10 characters, push an error
+     user_errors.push('Username Too Long')
+   }
+
+   //check if username exists
+   //borrowed from https://www.w3schools.com/jsref/jsref_tolowercase.asp
+   var username = request.body.username.toLowerCase(); //make username user enters case insensitive
+   if (typeof users_reg_data[username] != 'undefined') { //if the username is already defined in the registration data
+     user_errors.push('Username Taken')
+   }
+
+   //makes sure that only letters and numbers are used
+   //borrowed from https://www.w3resource.com/javascript/form/letters-numbers-field.php
+   if (/^[0-9a-zA-Z]+$/.test(request.body.username)) {
+   }
+   else {
+     user_errors.push('Only Letters and Numbers')
+   }
+ 
+   if ((request.body.password.length < 6)) { //check if password is a minimum of 6 characters long
+     pass_errors.push('Password Too Short')
+   }
+
+   //checks if re-entered password has the same input as password
+   if (request.body.password !== request.body.confirmpsw) { //if onfirm password does not equal password, push error
+     confirm_errors.push('Password does NOT Match')
+   }
+ 
+   //check if email is valid
+   //email validation code: https://www.w3resource.com/javascript/form/email-validation.php
+   var regemail = request.body.email.toLowerCase(); // to make email case insensitive
+   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(regemail)) {
+   }
+   else {
+     email_errors.push('Invalid Email')
+   }
+ 
+   //if data is valid, save the data to the file and redirect to invoice
+   
+   ///////fs.writeFileSync(filename, JSON.stringify(users_reg_data));
+   //^where do I put
+//THIS IS FROM A DIFFERENT PP
+ if (haserrors == false) {
+        users_reg_data[username] = {};
+        users_reg_data[username].name = request.body.name;
+        users_reg_data[username].password = request.body.password;
+        users_reg_data[username].email = request.body.email;
+        console.log(users_reg_data[username]);
+
+        fs.writeFileSync(filename, JSON.stringify(users_reg_data));
+
+        var qstring = querystring.stringify(request.query);
+
+        console.log(users_reg_data, "YAY");
+        //Takes you to invoice after registration data has been validated (Includes security tag)
+        request.query.InvoiceName = request.body.username;
+        //Inputs command to display successful registration before moving to invoice page.
+        request.query.SuccessfulReg = "Registration / Login Successful!";
+        qstring = querystring.stringify(request.query);
+
+        response.redirect("invoice.html?" + qstring);
+   }
+//UP TILL HERE
+   if (errors.length > 0) {
+     console.log(errors)
+     request.query.name = request.body.name;
+     request.query.username = request.body.username;
+     request.query.password = request.body.password;
+     request.query.confirmpsw = request.body.confirmpsw;
+     request.query.email = request.body.email;
+ 
+     request.query.errors = errors.join(';');
+     response.redirect('register.html?' + querystring.stringify(request.query)) //trying to add query from registration page and invoice back to register page on reload
+   }
+ 
+   //add errors to querystring
+   //MAKE an error.html??
+
 });
+
+//I think I can use what's written below...
+/*
+   //creates new user
+   username = request.body.username;
+   users_reg_data[username] = {};
+   users_reg_data[username].password = request.body.password;
+   //add repeat_password
+   users_reg_data[username].email = request.body.email;
+ 
+   //turns into a json string file
+   fs.writeFileSync(filename, JSON.stringify(users_reg_data));
+*/
+
+/////if (has_errors == false) {
+// NEED TO save registration data to file
+
+//I think he said I can use what's below but just change data in the pharanthesis ot something else but I forgot...
+//then change fs.readFileSync to fs.writeFileSync
+
+/*
+data = fs.readFileSync(filename, 'utf-8'); //read the file synchronously until the file comes back
+
+users_reg_data = JSON.parse(data) //will convert data (string) into an object or an array
+*/
+
+//make the query string of product quantity needed for invoice
+
+
+/* theQuantQuerystring = qs.stringify(user_product_quantities);
+ response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
+ //add their username in the invoice so that they know they're logged in (for personalization)
+} else {
+ response.redirect('register.html'); //if username doesn't exist then return to registration page
+ //NEED TO ADD MESSAGE ABOUT IF USERNAME AND PASSWORD ARE INCORRECT
+}
+});*/
 
 //borrowed code from Lab13
 app.use(express.static('./public'));

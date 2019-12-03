@@ -178,7 +178,7 @@ function Validate() {
    return false;
  }
 
- //VALIDATING NOT WORKING
+ //VALIDATION NOT WORKING (doesn't read that I inputted more than 8 characters)
 //validate password; required
  if (password.value == "") {
    password.style.border = "1px solid red";
@@ -189,11 +189,11 @@ function Validate() {
    return false;
  }
  //validate password; length 
- if (password.value.length > 8) {
-    username.style.border = "1px solid red";
-    document.getElementById('username_div').style.color = "red";
-    name_error.textContent = "Username must be at least 5 characters";
-    username.focus();
+ if (password.value.length < 8){
+    password.style.border = "1px solid red";
+    document.getElementById('pass_confirm_div').style.color = "red";
+    password_confirm.style.border = "1px solid red";
+    password_error.innerHTML = "Password must be at least 8 characters";
     return false;
   }
 
@@ -232,6 +232,7 @@ function passwordVerify() {
     password_error.innerHTML = "";
     return true;
  }
+ //if password and second password confirmation is equal, return true
  if (password.value === password_confirm.value) {
     password.style.border = "1px solid #5e6e66";
     document.getElementById('pass_confirm_div').style.color = "#5e6e66";
