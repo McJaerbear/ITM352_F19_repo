@@ -101,15 +101,17 @@ app.post("/login.html", function (request, response) {
             theQuantQuerystring = qs.stringify(user_product_quantities);  //turns quantity object into a string
             response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
             //add their username in the invoice so that they know they're logged in (for personalization)
-        } error = "Invalid Password"; //if password does not exist
+        } else {
+        error = "Invalid Password"; //if password does not exist
+    } 
     }
     else {
-        error = the_username + " Username does not exist"; //if username does not exit, will show message
+        error ="Invalid Username"; //if username does not exit, will show message
     }
     request.query.LoginError = error;
     request.query.StickyLoginUser = the_username;
     qstring = querystring.stringify(request.query);
-    response.redirect("login_alert.html");//if username doesn't exist then return to login page (with alert box)
+    response.redirect('/login.html?error=' + error);//if username doesn't exist then return to login page (with alert box)
 }
 );
 
@@ -133,12 +135,6 @@ app.post("/registration.html", function (request, response) {
         errors.push("Username not available");
     }
 
-
-
-
-
-
-    
     console.log(errors, users_reg_data);
     //if there are 0 errors and both password inputs match, request all registration info
     if ((errors.length == 0) && (pass == confirm_pass)){
