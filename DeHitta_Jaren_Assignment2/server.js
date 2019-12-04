@@ -123,37 +123,44 @@ app.post("/registration.html", function (request, response) {
     var p = request.body.password;
     var cp = request.body.repeat_password;
 
+    the_username= request.body.username.toLowerCase(); //makes username case insensitive
+
     username = request.body.username; //save new user to file name (users_reg_data)
     errors = {};//checks to see if username already exists
 
     //username validation
     if (typeof users_reg_data[username] != 'undefined') {
-        errors.username_error = "Username is Already in Use"; //error message if username already exist (connected to registration page)
+        errors.username_error = "Username is Already in Use."; //error message if username already exist (connected to registration page)
     }
     if ((/[a-z0-9]+/).test(request.body.username) == false) {
         errors.username_error = "Numbers and Letters only"; //error message if there are other special symbols other than numbers and symbols (connected to registration page)
     }
     if ((username.length > 10) == true) {
-        errors.username_error = "Username is too long. 10 characters max"; //error message if number of characters is longer than 10 (connected to registration page)
+        errors.username_error = "Username is too long - 10 characters max"; //error message if number of characters is longer than 10 (connected to registration page)
     }
     if ((username.length < 4) == true) {
-        errors.username_error = "Username is too short. 4 characters minimmum"; //error message if number of characters is shorter than 4 (connected to registration page)
+        errors.username_error = "Username is too short - 4 characters minimmum"; //error message if number of characters is shorter than 4 (connected to registration page)
     }
 
 
     fullname = request.body.fullname;//save new user to file name (users_reg_data)
-
     //fullname validation
     if ((/[a-zA-Z]+[ ]+[a-zA-Z]+/).test(request.body.fullname) == false) {
         errors.fullname_error = "Only use letters and add one space between first & last name"; //error message if special characters are used and/or a space is missing (connected to registration page)
     }
 
     if ((fullname.length > 30) == true) {
-        errors.fullname_error = "Please make your full name shorter. 30 characters max"; //error message if number of characters is longer than 30 (connected to registration page)
+        errors.fullname_error = "Please make your full name shorter - 30 characters max"; //error message if number of characters is longer than 30 (connected to registration page)
     }
 
-    //email validation
+    password = request.body.password;
+    //password (length validation)
+    if ((password.length < 6) == true) {
+        errors.password_error = "Password is too short - 6 characters minimmum"; //error message if number of characters is shorter than 6 (connected to registration page)
+    }
+
     email = request.body.email;
+    //email validation
     if ((/[a-z0-9._]+@[a-z0-9]+\.[a-z]+/).test(request.body.email) == false) {
         errors.email_error = "Please enter a proper email"; //error message if proper email is not used (connected to registration page)
     }

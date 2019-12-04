@@ -16,6 +16,10 @@
         fullname_label.innerHTML = urlParams.get("fullname_error");
       }
 
+      if (urlParams.has("password_error")) { //if there are password errors, get password errors and display in URL
+        password_label.innerHTML = urlParams.get("password_error");
+      }
+
       if (urlParams.has("email_error")) { //if there are fullname errors, get fullname errors and display in URL
         fullname_label.innerHTML = urlParams.get("email_error");
       }
@@ -61,9 +65,9 @@
       title="Only Letters and add a space"><label for="fullname" id="fullname_label"></label><br />
     <input type="text" name="username" size="40" required title="Either 4-10 Characters & only numbers/letters"
       placeholder="Create Username"><label for="username" id="username_label"></label><br />
-    <input type="password" id="password" name="password" size="40" required title="6 characters minimum"
-      placeholder="Create Password"><br />
-    <input type="password" id="repeat_password" name="repeat_password" size="40" pattern=".{6,}" required
+    <input type="password" name="password" size="40" required title="6 characters minimum"
+      placeholder="Create Password" id="password_label"><br />
+    <input type="password" id="repeat_password" name="repeat_password" size="40" required
       title="6 characters minimum" placeholder="Re-enter Password"><br />
     <input type="email" name="email" size="40" placeholder="Enter Email" required
       title="Invalid! Make sure your email contains the following... 1. @ sign 2. Three letters in domain name 3. Only numbers/characters and _ & . may be used. "><label
