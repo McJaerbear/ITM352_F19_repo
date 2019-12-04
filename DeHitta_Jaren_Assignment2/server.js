@@ -1,4 +1,4 @@
-//server for nintendo switch game shop
+//server for nintendo switch games store
 const querystring = require('querystring'); //require that the server responds to any errors used in Line 35
 
 var fs = require('fs');
