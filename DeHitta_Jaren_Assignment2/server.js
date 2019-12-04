@@ -6,7 +6,7 @@ var express = require('express'); //express package; allows us to use tools from
 var myParser = require("body-parser"); //takes query string
 var products = require("./public/product.js"); //take data from products.js in the public folder
 var qs = require('querystring'); //querystring needed in order to initiate functions
-var user_product_quantities = {}; //defines user_products_quantities as a variable that requests the query string
+var user_product_quantities = {}; //defines user_products_quantities as a variable that requests the query string of product quantity
 
 //borrowed code from Lab13
 var app = express();
@@ -87,6 +87,7 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
     //ex:if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
+//worked with code from Lab14
 app.post("/login.html", function (request, response) {
     //process login form POST and redirect to logged in page if ok, back to login page if not
     //if I have post, below will load
@@ -98,14 +99,13 @@ app.post("/login.html", function (request, response) {
         if (users_reg_data[the_username].password == request.body.password) {
             //make the query string of product quantity needed for invoice
             theQuantQuerystring = qs.stringify(user_product_quantities);  //turns quantity object into a string
-            response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`);
-            //add their username in the invoice so that they know they're logged in (for personalization)
+            response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`); //all good, send to invoice
         } else {
-        error = "Invalid Password"; //if password does not exist
+        error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
     } 
     }
     else {
-        error ="Invalid Username"; //if username does not exit, will show message
+        error ="Invalid Username"; //if username does not exit, will show message (connected to login page)
     }
     request.query.LoginError = error;
     request.query.StickyLoginUser = the_username;
@@ -114,42 +114,66 @@ app.post("/login.html", function (request, response) {
 }
 );
 
-//CONFIRM_PASSWORD NOT WORKING
-//NEED TO ADD CASE SENSITIVITY FOR BOTH USERNAME AND PASSWORD
-//borrowed some code from Lab14 (then added)
+//worked with code from Lab14
 app.post("/registration.html", function (request, response) {
-    //process a simple register form
-    console.log(user_product_quantities);
-    the_username = request.body.username;
-    username = request.body.username.toLowerCase(); //makes username case insensitive
-    //save new user to file name (users_reg_data)
+     //process a simple register form
+     console.log(user_product_quantities);
+ 
+     //variable for re-enter password validation
+     var p = request.body.password;
+     var cp = request.body.repeat_password;
 
-    var pass = request.body.password; //create variable of data in password form field
-    var confirm_pass = request.body.confirm_password; //create variable of data in confirmPassword form field
+     username = request.body.username; //save new user to file name (users_reg_data)
+     errors = {};//checks to see if username already exists
+   //username validation
+  if (typeof users_reg_data[username] != 'undefined'){
+  errors.username_error="Username is Already in Use"; //error message if username already exist (connected to registration page)
+  }
+  if ((/[a-z0-9]+/).test(request.body.username) == false){
+     errors.username_error="Numbers and Letters only"; //error message if there are other special symbols other than numbers and symbols (connected to registration page)
+  }
+  if ((username.length > 10) == true){
+     errors.username_error = "Username is too long. 10 characters max"; //error message if number of characters is longer than 10 (connected to registration page)
+  }
+  if ((username.length < 4) == true){
+         errors.username_error = "Username is too short. 4 characters minimmum"; //error message if number of characters is shorter than 4 (connected to registration page)
+  }
+  
 
-    errors = []; //checks to see if username already exists
-    //validate username
-    if (typeof users_reg_data[username] != 'undefined') {
-        errors.push("Username not available");
-    }
-    console.log(errors, users_reg_data);
+  fullname = request.body.fullname;//save new user to file name (users_reg_data)
 
-    //if there are 0 errors and both password inputs match, request all registration info
-    if ((errors.length == 0) && (pass == confirm_pass)){
-        users_reg_data[username] = {};
-        users_reg_data[username].username = request.body.username;
-        users_reg_data[username].password = request.body.password;
-        users_reg_data[username].email = request.body.email;
-        users_reg_data[username].fullname = request.body.fullname;
-
-        //make the query string of product quantity needed for invoice
-        fs.writeFileSync(filename, JSON.stringify(users_reg_data)); //writes registration info into the userdata json file
-        theQuantQuerystring = qs.stringify(user_product_quantities); //turns quantity object into a string
-        response.redirect("/invoice.html?" + theQuantQuerystring + `&username=${the_username}`); //if all good, send to the invoice page with username/quantity info
-    } else {
-        response.redirect('/registration.html?' + 'try again'); //if there are errors, send back to registration page 
-    }
-});
+  //fullname validation
+  if ((/[a-zA-Z]+[ ]+[a-zA-Z]+/).test(request.body.fullname) == false){
+  errors.fullname_error="Only use letters and add one space between first & last name"; //error message if special characters are used and/or a space is missing (connected to registration page)
+  }
+  
+  if ((fullname.length > 30) == true){
+     errors.fullname_error = "Please make your full name shorter. 30 characters max"; //error message if number of characters is longer than 30 (connected to registration page)
+  }
+  
+  //email validation
+  email=request.body.email;
+  if ((/[a-z0-9._]+@[a-z0-9]+\.[a-z]+/).test(request.body.email) == false) {
+  errors.email_error="Please enter a proper email"; //error message if proper email is not used (connected to registration page)
+  }
+  
+  console.log(errors, users_reg_data);
+  //if there are 0 errors and repeat_password is equal to password, request all registration info
+  if ((Object.keys(errors).length == 0) & (p == cp)) {
+     users_reg_data[username] = {};
+     users_reg_data[username].username = request.body.username
+     users_reg_data[username].password = request.body.password;
+     users_reg_data[username].email = request.body.email;
+     users_reg_data[username].fullname = request.body.fullname;
+   
+  fs.writeFileSync(filename, JSON.stringify(users_reg_data)); //saves/writes registaration data into the user_data json file
+  theQuantQuerystring = qs.stringify(user_product_quantities); //turns quantity object into a string
+     response.redirect("/invoice.html?" + theQuantQuerystring + `&username=${username}`); //all good, send to invoice
+  } else { 
+     qstring= qs.stringify(request.body)+"&"+qs.stringify(errors); //puts errors into a query string
+     response.redirect('/registration.html?' + qstring ); //if there are errors, send back to registration page to retype
+  } 
+  });
 
 //borrowed code from Lab13
 app.use(express.static('./public'));

@@ -1,67 +1,77 @@
+<script>
+  window.onload = function () {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("username")) { //Gets username data and displays in URL
+      forms.fullname.value = urlParams.get("fullname");
+      forms.username.value = urlParams.get("username");
+      forms.email.value = urlParams.get("email");
+      forms.password.value = urlParams.get("password");
+      forms.repeat_password.value = urlParams.get("repeat_password");
+
+      if (urlParams.has("username_error")) { //if there are username errors, get username errors and display in URL
+        username_label.innerHTML = urlParams.get("username_error");
+      }
+
+      if (urlParams.has("fullname_error")) { //if there are fullname errors, get fullname errors and display in URL
+        fullname_label.innerHTML = urlParams.get("fullname_error");
+      }
+
+      if (urlParams.has("email_error")) { //if there are fullname errors, get fullname errors and display in URL
+        fullname_label.innerHTML = urlParams.get("email_error");
+      }
+
+      checkpassword();
+    }
+  }
+</script>
 <html lang="en">
 
 <head>
-    <script>
-        //shows alert for any registration errors
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has("error")) {
-                alert(urlParams.get("error"));
-            }
-        }</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="login_reg.css">
+  <h3>Register</h3>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="login_reg.css">
+</head>
 
-<body class="content">
-
-    <h3>Register</h3>
-    <p>It's quick and easy!</p>
-    <script>
-    //<div class="container"> below comments
-    //register validation
-    //pattern will show what's allowed to be inputted in the textbox
-    //placeholder shows what's on the textbox (removed when something is typed in the textbox)
-    //required title shows user what they should be inputting in the text for it to be valid
-    //validates re-enter password when "register" button is clicked
-    //NOTE: validation works on google, but not safari (for safari it will say "match required fields" but doesn't say specific)
-    </script>
-    <div class="container">
-        <form name="register" method="POST">
-            <label for="fullname">Full Name</label>
-            <input type="text" name="fullname" size="40" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+" maxlength="30"
-                placeholder="Enter First & Last Name" required
-                title="Only letters, & add one space between first name and last name"><br />
-
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" pattern=".[a-z0-9]{4,10}" required
-                title="5-15 Characters, only numbers and lowercaseletters" placeholder="Enter Username"><br />
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" pattern=".[a-z0-9]{6,}" required
-                title="6 characters minimum, only numbers and lowercaseletters" placeholder="Enter Password"><br />
-
-            <label for="confirm_password">Re-enter Password</label>
-            <input type="password" id="confirm_password" name="confirm_password" pattern=".[a-z0-9]{5,}" required
-                title="Must match password above" placeholder="Re-enter Password"><br />
-
-            <label for="email">Email</label>
-            <input type="email" name="email" size="40" placeholder="Enter Email"
-                pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]{2,3}$" required
-                title="Error!! Make sure your email contains the following... 1. @ sign 2. Three letters in domain name 3. Only numbers/characters and _ & . may be used. "><br />
-
-            <label>
-                <h3>
-                    If requirements are not met, page wil reload.
-                </h3>
-
-            </label>
-            <input type="submit" value="Register" id="submit">
-
-        </form>
-    </div>
-
+<body>
+  <script>
+    //checks if password is equal to repeat password on html form, if not, then show error message that says passwords don't match, please retype
+    //got help from Jayla and Melissa
+    function checkpassword() {
+      var p = forms.password.value;
+      var cp = forms.repeat_password.value;
+      if (p == cp) { }
+      else
+        alert("Passwords Don't Match. Please retype")
+      response.redirect("registration.html?"); //if passwords don't match, redirect back to registration html page
+    }
+  </script>
 </body>
+
+<p>It's quick and easy!</p>
+<script>
+    //<div class="container"> is for registration form
+</script>
+<div class="container">
+  <form name="forms" method="POST" action="">
+    <input type="text" name="fullname" size="40" maxlength="30" placeholder="Enter First & Last Name" required
+      title="Only Letters and add a space"><label for="fullname" id="fullname_label"></label><br />
+    <input type="text" name="username" size="40" required title="Either 4-10 Characters & only numbers/letters"
+      placeholder="Create Username"><label for="username" id="username_label"></label><br />
+    <input type="password" id="password" name="password" size="40" required title="6 characters minimum"
+      placeholder="Create Password"><br />
+    <input type="password" id="repeat_password" name="repeat_password" size="40" pattern=".{6,}" required
+      title="6 characters minimum" placeholder="Re-enter Password"><br />
+    <input type="email" name="email" size="40" placeholder="Enter Email" required
+      title="Invalid! Make sure your email contains the following... 1. @ sign 2. Three letters in domain name 3. Only numbers/characters and _ & . may be used. "><label
+      for="email" id="email_label"></label><br />
+ 
+    <input type="submit" value="Register" id="submit" onclick="checkpassword()">
+
+  </form>
+</div>
+
+<a href="login.html"> Click here to go back to login page </a>
 
 </html>
