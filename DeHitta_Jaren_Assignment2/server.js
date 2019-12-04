@@ -93,6 +93,7 @@ app.post("/login.html", function (request, response) {
     //if I have post, below will load
     console.log(user_product_quantities);
     the_username = request.body.username;
+    the_username= request.body.username.toLowerCase(); //makes username case insensitive
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
@@ -123,9 +124,8 @@ app.post("/registration.html", function (request, response) {
     var p = request.body.password;
     var cp = request.body.repeat_password;
 
-    the_username= request.body.username.toLowerCase(); //makes username case insensitive
-
     username = request.body.username; //save new user to file name (users_reg_data)
+    username= request.body.username.toLowerCase(); //makes username case insensitive
     errors = {};//checks to see if username already exists
 
     //username validation
