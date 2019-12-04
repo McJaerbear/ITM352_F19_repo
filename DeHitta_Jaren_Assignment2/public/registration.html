@@ -1,7 +1,7 @@
 <script>
   window.onload = function () {
     var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("username")) { //Gets username data and displays in URL
+    if (urlParams.has("username")) { //gets username data and displays in URL
       forms.fullname.value = urlParams.get("fullname");
       forms.username.value = urlParams.get("username");
       forms.email.value = urlParams.get("email");
@@ -19,8 +19,7 @@
       if (urlParams.has("email_error")) { //if there are fullname errors, get fullname errors and display in URL
         fullname_label.innerHTML = urlParams.get("email_error");
       }
-
-      checkpassword();
+      checkpassword(); //will look at checkpassword function below
     }
   }
 </script>
@@ -36,14 +35,15 @@
 
 <body>
   <script>
-    //checks if password is equal to repeat password on html form, if not, then show error message that says passwords don't match, please retype
-    //got help from Jayla and Melissa
+    //checks if password is equal to repeat_password on html form
+    //if they do not match, it will show as error message that says passwords don't match, please retype
+    //borrowed from Jayla and Melissa
     function checkpassword() {
       var p = forms.password.value;
       var cp = forms.repeat_password.value;
       if (p == cp) { }
       else
-        alert("Passwords Don't Match. Please retype")
+        alert("Passwords Don't Match. Please Retype")
       response.redirect("registration.html?"); //if passwords don't match, redirect back to registration html page
     }
   </script>
@@ -52,6 +52,8 @@
 <p>It's quick and easy!</p>
 <script>
     //<div class="container"> is for registration form
+    //placeholder shows what's on the textbox (removed when something is typed in the textbox)
+    //required title shows requirements as user is filling out the registration form (only when the requirements are not met)
 </script>
 <div class="container">
   <form name="forms" method="POST" action="">
@@ -66,7 +68,7 @@
     <input type="email" name="email" size="40" placeholder="Enter Email" required
       title="Invalid! Make sure your email contains the following... 1. @ sign 2. Three letters in domain name 3. Only numbers/characters and _ & . may be used. "><label
       for="email" id="email_label"></label><br />
- 
+
     <input type="submit" value="Register" id="submit" onclick="checkpassword()">
 
   </form>
