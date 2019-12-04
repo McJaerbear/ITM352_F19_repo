@@ -134,8 +134,9 @@ app.post("/registration.html", function (request, response) {
     if (typeof users_reg_data[username] != 'undefined') {
         errors.push("Username not available");
     }
-
     console.log(errors, users_reg_data);
+
+    
     //if there are 0 errors and both password inputs match, request all registration info
     if ((errors.length == 0) && (pass == confirm_pass)){
         users_reg_data[username] = {};

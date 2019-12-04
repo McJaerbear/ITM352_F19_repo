@@ -1,7 +1,14 @@
 <html lang="en">
 
 <head>
-
+    <script>
+        //shows alert for any registration errors
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("error")) {
+                alert(urlParams.get("error"));
+            }
+        }</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -37,21 +44,21 @@
 
             <label for="confirm_password">Re-enter Password</label>
             <input type="password" id="confirm_password" name="confirm_password" pattern=".[a-z0-9]{5,}" required
-                title="Must match password above" placeholder="Re-enter Password" ><br />
+                title="Must match password above" placeholder="Re-enter Password"><br />
 
             <label for="email">Email</label>
             <input type="email" name="email" size="40" placeholder="Enter Email"
                 pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]{2,3}$" required
                 title="Error!! Make sure your email contains the following... 1. @ sign 2. Three letters in domain name 3. Only numbers/characters and _ & . may be used. "><br />
 
-                <label> 
-                    <h3>
-                        If requirements are not met, page wil reload.
-                    </h3>
+            <label>
+                <h3>
+                    If requirements are not met, page wil reload.
+                </h3>
 
-                </label>
+            </label>
             <input type="submit" value="Register" id="submit">
-        
+
         </form>
     </div>
 
