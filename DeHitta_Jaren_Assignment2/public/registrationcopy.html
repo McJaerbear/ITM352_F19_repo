@@ -1,0 +1,50 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="login_reg.css">
+
+<body class="content">
+    <script>
+        //checks if password is equal to repeat password on html form 
+        //if not equal, show alert message
+        function checkpassword() {
+            var p = f.password.value;
+            var cp = f.repeat_password.value;
+            if (p == cp) { }
+            else
+                alert("Passwords Don't Match. Please re-type")
+            response.redirect("registration.html?"); //if passwords do not match, redirect back to registration page
+        }
+    </script>
+    <h3>Register</h3>
+    <p>It's quick and easy!</p>
+    <script>
+    //<div class="container"> below comments
+    //register validation
+    //pattern will show what's allowed to be inputted in the textbox
+    //placeholder shows what's on the textbox (removed when something is typed in the textbox)
+    //required title shows user what they should be inputting in the text for it to be valid
+    //validates re-enter password when "register" button is clicked
+    //NOTE: validation works on google, but not safari (for safari it will say "match required fields" but doesn't say specific)
+    </script>
+    <div class="container">
+            <li><label for="fullName">Full Name:</label></li>
+            <li><input type="text" name="fullName" size="20" placeholder="Enter Your Name" required pattern=[A-Za-z]{1,30} oninvalid="this.setCustomValidity('Please input your full name here. Letters only. Max 30 characters.')" oninput="this.setCustomValidity('')"></li>
+            <li><label for="username">Username:</label></li> 
+            <li><input type="text" name="username" size="20" placeholder="Enter Username" required pattern="[A-Za-z0-9]{4,10}" oninvalid="this.setCustomValidity('Please input a login username here. Letters and numbers only. Minimum 4 characters, Maximum 10 characters.')" oninput="this.setCustomValidity('')"></li>
+            <li><label for="email">Email: </label></li>
+            <li><input type="text" name="email" size="20" placeholder="Enter Email Address" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" oninvalid="this.setCustomValidity('Please input a valid email address.')" oninput="this.setCustomValidity('')"></li>
+            <li><label for="password">Password:</label></li> 
+            <li><input type="password" name="password" size="20" placeholder="Enter Password" required minlength="6" oninvalid="this.setCustomValidity('Please input your password here. Minimum 6 characters.')" oninput="this.setCustomValidity('')"></li>
+            <li><label for="confirmPassword">Confirm Password:<label></li>
+            <li><input type="password" name="confirmPassword" size="20" placeholder="Confirm Password" required minlength="6" oninvalid="this.setCustomValidity('Please input your password here. Must match above form.')" oninput="this.setCustomValidity('')"></li>
+            <br>
+            <li><input type="submit" value="Complete Registration" id="submit"></li>
+    </div>
+
+</body>
+
+</html>
