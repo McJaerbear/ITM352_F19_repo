@@ -87,7 +87,6 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
     //ex:if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
-//used login2.html as a second html page that will show alert message if username and password do not match
 app.post("/login.html", function (request, response) {
     //process login form POST and redirect to logged in page if ok, back to login page if not
     //if I have post, below will load
@@ -122,9 +121,8 @@ app.post("/registration.html", function (request, response) {
     //process a simple register form
     console.log(user_product_quantities);
     the_username = request.body.username;
-    username = request.body.username.toLowerCase(); //makes username case sensisitive
+    username = request.body.username.toLowerCase(); //makes username case insensitive
     //save new user to file name (users_reg_data)
-    password = request.body.password.toLowerCase(); //makes password case sensitive
 
     var pass = request.body.password; //create variable of data in password form field
     var confirm_pass = request.body.confirm_password; //create variable of data in confirmPassword form field
@@ -136,7 +134,6 @@ app.post("/registration.html", function (request, response) {
     }
     console.log(errors, users_reg_data);
 
-    
     //if there are 0 errors and both password inputs match, request all registration info
     if ((errors.length == 0) && (pass == confirm_pass)){
         users_reg_data[username] = {};
