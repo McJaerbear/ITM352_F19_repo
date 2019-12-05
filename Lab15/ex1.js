@@ -4,7 +4,8 @@ var app = express();
 var myParser = require("body-parser"); //takes the query string
 app.use(myParser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser');
-app.use(cookieParser()); //will take middleware into a cookie that you can use when you make a request
+app.use(cookieParser()); //LAB15
+//will take middleware into a cookie that you can use when you make a request
 
 fs = require('fs'); //loads the node.js file system module
 
@@ -40,19 +41,25 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
     //ex: if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
+
+//NEW INFO FROM LAB15//
 app.use(cookieParser());
 
-app.get('/set_cookie', function (request, response){
-    response.cookie('myname', 'Jaren De Hitta').send('cookie set')
+app.get('/set_cookie', function (request, response) { //we're using this to send a cookie with your name data when this route is called
+    response.cookie('myname', 'Jaren De Hitta', {maxAge: 5*1000}).send('cookie set'); //we're taking the response, then setting cookie identifier (myname) and giving it data (Joey Gomes). Then we will send a response back w/ message 'cookie sent'
+                                            //maxage set in miliseconds. 5*1000 means it will expire in 5 seconds.
 });
 
-app.get('/use_cookie', function (request, response){
+app.get('/use_cookie', function (request, response) { //we're using this to test if the cookie above exists and respond with some info
     output = "No cookie with myname";
-    if(typeof request.cookies.myname != 'undefined') {
-    output = `Welcome to the Use Cookie page ${request.cookies.myname}` //this part not working for me
+    if(typeof request.cookies.myname != 'undefined') { //Using an if statement, we can determine if we recieved a cookie it will overwrite our default output variable
+        output = `Welcome to the Use Cookie page, ${request.cookies.myname}`; //Set variable output. If I have a cookie, this will grab a cookie from our request. Additional dot notation specifies cookie name (we're looking for myname cookie)
     }
     response.send(output);
+    
 });
+
+//END LAB15
 
 app.get("/login", function (request, response) { //if I get a login request, do what's written below
     //give a simple login form
