@@ -1,7 +1,7 @@
 /* borrowed from Kevin Powell 
 https://www.youtube.com/watch?v=FEmysQARWFU */
 
-/* FOR NAVBAR */
+/* STYLES NAVBAR */
 body {
 	margin: 0;
 	background:white;
@@ -15,7 +15,7 @@ body {
 }
 
 header {
-  background: #55d6aa;
+  background: burlywood;
 }
 
 header::after {
@@ -30,7 +30,7 @@ header::after {
 }
 
 nav {
-  float: right;
+  float: left;
 }
 
 nav ul {
@@ -51,7 +51,7 @@ nav a {
   color: #444;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 35px;
+  font-size: 30px;
 }
 
 nav a:hover {
@@ -75,5 +75,5 @@ nav a:hover::before {
   width: 100%;
 }
 
-/* END OF NAVBAR */
+/* END STYLES FOR NAVBAR */
 

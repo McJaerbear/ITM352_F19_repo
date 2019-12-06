@@ -15,7 +15,7 @@
         errs = isNonNegInt(theTextbox.value, true); //if non neagtive integer, then data is valie
         if (errs.length == 0) errs = ['Quantity:']; //when typing in the textbox, this will display 
         if (theTextbox.value.trim() == '') errs = ['Quantity:']; //the label to the left of the texbox
-        document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", "); 
+        document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
     }
 
     window.onload = function () {
@@ -41,58 +41,42 @@
                 alert("Please enter only valid quantities!");
             } else if (total_qty == 0) { // no quantity selections, just give a general alert
                 alert("Please select quantities!");
-            } 
+            }
         }
     }
 </script>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Nintendo Switch Games Store</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
-
-    <link href="product-style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+    <link href="general.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 </head>
 
 <body>
 
-    <form name="product_selection_form" action="process_page" method="GET">
-        <header>
-            <h1>Nintendo Switch Games Store</h1>
-        </header>
-        <div>
-            <main id="products_main_display">
-                <script>
-                    //will take data from the variable product from product.js array
-                    //will show "game", "image", "price", and a quantity textbox labeled Quantity
-                    for (i = 0; i < products.length; i++) {
-                        document.write(`
-                        <h2>${products[i].product}</h2>   
-                        <h2>$${products[i].price}</h2>
-                        <div><img src="${products[i].image}"></div>           
-                        <div><label id="quantity${i}_label"}">Quantity:</label>
-                                <input type="text" placeholder="0" name="quantity${i}" 
-                                onkeyup="checkQuantityTextbox(this);">         
-                        </div>
-                                `)
-                    }
-                    //below is the purchase button, when pressed it will submit the information
-                </script>
-                <div>
-                <strong><input type="submit" value="Purchase!" name="purchase_submit"></strong>
-                </div>
-            </main>
+    <header>
+        <div class="container">
+            <nav>
+                <ui>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="product_display.html">Products</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="registration.html">Get Started</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ui>
+            </nav>
         </div>
-        <footer id="display_footer">
-            <h1>
-                We Have The Best Consoles,Games,Accessories Available!
-            </h1>
-        </footer>
-    </form>
+    </header>
+
+    <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
 
 </body>
 

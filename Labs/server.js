@@ -21,6 +21,8 @@ app.all('*', function (request, response, next) { //respond to HTTP request by s
 // <strong><input type="submit" value="Purchase!" name="purchase_submit"></strong> <-- WAS HOW IT WAS
 // MUST ALSO CHANGE THE WINDOWSONLOAD FUNCTION
 
+//I MAY NEED TO ADD QUANTITY VALIDATION CODE IN PRODUCTS DISPLAY TO THE CART PAEG AS WELL IF THERE IS QUANTITY TEXTBOX
+
 //borrowed code from Assignment1 example and added
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
 app.get("/process_page", function (request, response) {
@@ -51,11 +53,11 @@ app.get("/process_page", function (request, response) {
             response.redirect("product_display.html?" + qstr);
             //if quantity data is valid, send an invoice
         } else { //all good to go!
-            response.redirect("login.html?" + qstr);
+            response.redirect("cart.html?" + qstr);
         }
     }
-    //READ ME!!!!!!!
-    //if I want to create multiple products page, I think I just need to make the above one or two more times
+    //READ ME!!!!!
+    //IDK IF SIMPLY REFIRECTING TO THE CART WOULD BE GOOD ENOUGH
 });
 
 //checking that data is valid
@@ -95,20 +97,22 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
     //ex:if we change var filename = 'zuser_data.json'; will return zuser_data.jsondoes not exist!
 }
 
+//LOGIN CODE//
+//Need to add cookies/sessions
+//Still need to figgure it out
+
 //worked with code from Lab14
 app.post("/login.html", function (request, response) {
     //process login form POST and redirect to logged in page if ok, back to login page if not
     //if I have post, below will load
     console.log(user_product_quantities);
     the_username = request.body.username;
-    the_username= request.body.username.toLowerCase(); //makes username case insensitive
+    the_username = request.body.username.toLowerCase(); //makes username case insensitive
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
         if (users_reg_data[the_username].password == request.body.password) {
-            //make the query string of product quantity needed for invoice
-            theQuantQuerystring = qs.stringify(user_product_quantities);  //turns quantity object into a string
-            response.redirect('invoice.html?' + theQuantQuerystring + `&username=${the_username}`); //if all good, send to invoice
+            response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
         } else {
             error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
         }
@@ -123,6 +127,10 @@ app.post("/login.html", function (request, response) {
 }
 );
 
+//REGISTRATION CODE//
+//DONE because I already have validation done and I will just redirect them to login after registering
+//Cookies and session will occur in the LOGIN CODE above
+
 //worked with code from Lab14
 app.post("/registration.html", function (request, response) {
     //process a simple register form
@@ -133,7 +141,7 @@ app.post("/registration.html", function (request, response) {
     var cp = request.body.repeat_password;
 
     username = request.body.username; //save new user to file name (users_reg_data)
-    username= request.body.username.toLowerCase(); //makes username case insensitive
+    username = request.body.username.toLowerCase(); //makes username case insensitive
     errors = {};//checks to see if username already exists
 
     //username validation
@@ -150,21 +158,14 @@ app.post("/registration.html", function (request, response) {
         errors.username_error = "Username is too short - 4 characters minimmum"; //error message if number of characters is shorter than 4 (connected to registration page)
     }
 
-
     fullname = request.body.fullname;//save new user to file name (users_reg_data)
     //fullname validation
-    if ((/[a-zA-Z]+[ ]+[a-zA-Z]+/).test(request.body.fullname) == false) {
-        errors.fullname_error = "Only use letters and add one space between first & last name"; //error message if special characters are used and/or a space is missing (connected to registration page)
+    if ((/[a-zA-Z]/).test(request.body.fullname) == false) {
+        errors.fullname_error = "Only use letters"; //error message if special characters are used and/or a space is missing (connected to registration page)
     }
 
     if ((fullname.length > 30) == true) {
         errors.fullname_error = "Please make your full name shorter - 30 characters max"; //error message if number of characters is longer than 30 (connected to registration page)
-    }
-
-    password = request.body.password;
-    //password (length validation)
-    if ((password.length < 6) == true) {
-        errors.password_error = "Password is too short - 6 characters minimmum"; //error message if number of characters is shorter than 6 (connected to registration page)
     }
 
     email = request.body.email;
@@ -183,13 +184,15 @@ app.post("/registration.html", function (request, response) {
         users_reg_data[username].fullname = request.body.fullname;
 
         fs.writeFileSync(filename, JSON.stringify(users_reg_data)); //saves/writes registaration data into the user_data json file
-        theQuantQuerystring = qs.stringify(user_product_quantities); //turns quantity object into a string
-        response.redirect("/invoice.html?" + theQuantQuerystring + `&username=${username}`); //if all good, send to invoice
+        response.redirect("/login.html?"); //if all good, redirect to login then have them log in
     } else {
         qstring = qs.stringify(request.body) + "&" + qs.stringify(errors); //puts errors into a query string
         response.redirect('/registration.html?' + qstring); //if there are errors, send back to registration page to retype
     }
 });
+
+
+//SHOPPING CART CODE//
 
 //borrowed code from Lab13
 app.use(express.static('./public'));
