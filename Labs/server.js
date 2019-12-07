@@ -51,14 +51,15 @@ app.get("/process_page", function (request, response) {
             //if quantity data is not valid, send them back to product display
             qstr = querystring.stringify(request.query);
             response.redirect("product_display.html?" + qstr);
-            //if quantity data is valid, send an invoice
         } else { //all good to go!
-            response.redirect("cart.html?" + qstr);
+            response.redirect("cart.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
         }
     }
     //READ ME!!!!!
     //IDK IF SIMPLY REDIRECTING TO THE CART WOULD BE GOOD ENOUGH
 });
+
+//SHOPPING CART CODE//
 
 //checking that data is valid
 //borrowed code from Lab13/Assigment1
@@ -191,8 +192,6 @@ app.post("/registration.html", function (request, response) {
     }
 });
 
-
-//SHOPPING CART CODE//
 
 //borrowed code from Lab13
 app.use(express.static('./public'));
