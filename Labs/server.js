@@ -57,7 +57,7 @@ app.get("/process_page", function (request, response) {
         }
     }
     //READ ME!!!!!
-    //IDK IF SIMPLY REFIRECTING TO THE CART WOULD BE GOOD ENOUGH
+    //IDK IF SIMPLY REDIRECTING TO THE CART WOULD BE GOOD ENOUGH
 });
 
 //checking that data is valid
@@ -99,7 +99,7 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
 
 //LOGIN CODE//
 //Need to add cookies/sessions
-//Still need to figgure it out
+//Still need to figure it out
 
 //worked with code from Lab14
 app.post("/login.html", function (request, response) {
