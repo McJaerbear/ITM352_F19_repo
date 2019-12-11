@@ -20,7 +20,7 @@
 }
 
 /* styles "add to cart" button */
-input[type=submit] {
+input[type=button] {
   border: none;
   outline: 0;
   padding: 12px;
@@ -71,6 +71,7 @@ main li {
   list-style: none; 
 }
 
+/* creates the backrgound image for website (wood tiles) */
 body{
   background-image: url(/images/tile.jpg);
 }

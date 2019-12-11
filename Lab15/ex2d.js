@@ -90,6 +90,7 @@ app.post("/login", function (request, response) {
     //if I have post, below will load
     console.log(request.body)
     the_username = request.body.username;
+    request.cookie.username = username;
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
         if (users_reg_data[the_username].password == request.body.password) {
             theQuantQuerystring = qs.stringify(user_product_quantities);

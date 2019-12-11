@@ -3,11 +3,26 @@
 <script>
     let params = (new URL(document.location)).searchParams; //searching for params in a new URL document location
     //getting the quantity amount from product.js for each data inputted
-
+    
     //pop-up message when usccesful login occurs 
     //will show up before loading to invoice.html
-    if (params.has('username')) { //
+    if(params.has('username')){ //
         alert(`thank you for your purchase ${params.get('username')}`);
+    }
+    //send message that they must login or register before they can be sent to the invoice
+    else{
+        alert('you must login or register first');
+        window.location = 'login.html';
+        window.stop();
+    }
+    var quantities = [];
+    if (params.has('purchase_submit')) {
+        for (i = 0; i < products.length; i++) {
+            if (params.has(`quantity${i}`)) {
+                a_qty = params.get(`quantity${i}`);
+                quantities[i] = a_qty;
+            }
+        }
     }
 </script>
 
@@ -71,7 +86,7 @@
                 if (subtotal <= 50) {
                     shipping = 5; //shipping is $5 if subtotal is less than or equal to 100
                 }
-                else if (subtotal <= 150) {
+                else if (subtotal <= 100) {
                     shipping = 2; //shipping is $2 if subtotal is less than or equal to 250
                 }
                 else {
@@ -114,8 +129,8 @@
                 <td style="text-align: left;" colspan="5" width="121%"><strong>
                         OUR SHIPPING POLICY: <br>
                         Subtotals less than $50 will be charged $5 shipping. <br>
-                        Subtotals between $50 - $150 will be charged $2 shipping. <br>
-                        Subtotals over $150 will be have free shipping. <br>
+                        Subtotals between $50 - $100 will be charged $2 shipping. <br>
+                        Subtotals over $100 will be have free shipping. <br>
                     </strong></td>
             </tr>
         </tbody>

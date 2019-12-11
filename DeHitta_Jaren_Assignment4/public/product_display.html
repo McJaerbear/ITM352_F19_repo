@@ -18,6 +18,32 @@
         document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
     }
 
+    async function postData(url = '', data = {}) {
+        //console.log.data//
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrer: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return await response.json(); // parses JSON response into native JavaScript objects
+        }
+
+    function add_to_cart(product_index, product_quantity) {
+        console.log(product_index, product_quantity);
+        postData('add_to_cart', {
+            'p_index': product_index, 'p_quantity': product_quantity
+        })
+    }
+
     window.onload = function () {
         let params = (new URL(document.location)).searchParams; // get the query string which has the form data
         //form was submitted so check that quantities are valid then redirect to invoice if ok.
@@ -47,18 +73,26 @@
 </script>
 
 <!DOCTYPE html>
+<html>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
-    <link href="general.css" rel="stylesheet">
+    <link href="display.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
 </head>
 
 <body>
+    <script>
+        //NOT TOO SURE ON THE ACTION AND METHOD YET
+        //I THINK ACTION NAME NEEDS TO BE CHANGE IF NEEDED SO NOT THE SAME AS PRODUCT_DISPLAY.HTML
+    </script>
 
     <header>
         <div class="container">
@@ -75,9 +109,35 @@
             </nav>
         </div>
     </header>
-
     <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
 
+
+    <div>
+        <ul>
+            <main>
+                <script>
+                    //will take data from the variable product from product.js array
+                    //will show "product", "image", "price", and a quantity textbox labeled Quantity
+                    for (i = 0; i < products.length; i++) {
+                        document.write(` 
+               <li> <div class="card">
+                <h2>${products[i].toy}</h2>
+                <img src="${products[i].image}">
+                <p class="price">$${products[i].price}</p>
+                <label id="quantity${i}_label"}">Quantity:</label>
+                        <input type="text" placeholder="0" id="quantity${i}" 
+                        onkeyup="checkQuantityTextbox(this);">     
+                <p><input type="button" value="Add to cart" class="button" name="purchase_submit" 
+                    onclick="add_to_cart(${i}, document.getElementById('quantity${i}').value);"
+                    /></p></li>
+                        `)
+                    }
+                    //IF WE'RE GOING TO MAKE A VIRTUAL CART THEN WE SHOULD PROBABLY ONLY HAVE ONE PURCHASE BUTTON
+                    //MAKE THEM LOGIN FIRST BEFORE CLICKING PURCAHSE TO SAVE USERNAME IF THEY HAVE NOT DONE SO ALREADY??
+                </script>
+            </main>
+        </ul>
+    </div>
 </body>
 
 </html>

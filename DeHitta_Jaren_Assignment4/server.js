@@ -10,18 +10,21 @@ var user_product_quantities = {}; //defines user_products_quantities as a variab
 
 //borrowed code from Lab13
 var app = express();
+app.use(myParser.urlencoded({ extended: true }));
+var session = require('express-session'); //EX2 new middleware
+
+app.use(session({secret: "ITM352 rocks!"}));
+
 app.all('*', function (request, response, next) { //respond to HTTP request by sending type of request and the path of request
-    console.log(request.method + ' to ' + request.path);
+    console.log(request.method + ' to ' + request.path, request.session.id);
     next(); //calls middleware function
 });
 
+app.post('/add_to_cart', function (request, response) {
+    console.log('add to cart:', request.body);
+    response.json("{'result': 'okay'}");
 
-// I TOOK OUT PURCHASE SUBMIT FROM THE PRODUCTS_DISPLAY PAGE THAT'S CONNECTED TO THE PURCHASE BUTTON
-// USE THIS LABEL FOR THE CART MAYBE?
-// <strong><input type="submit" value="Purchase!" name="purchase_submit"></strong> <-- WAS HOW IT WAS
-// MUST ALSO CHANGE THE WINDOWSONLOAD FUNCTION
-
-//I MAY NEED TO ADD QUANTITY VALIDATION CODE IN PRODUCTS DISPLAY TO THE CART PAEG AS WELL IF THERE IS QUANTITY TEXTBOX
+});
 
 //borrowed code from Assignment1 example and added
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
@@ -52,14 +55,13 @@ app.get("/process_page", function (request, response) {
             qstr = querystring.stringify(request.query);
             response.redirect("product_display.html?" + qstr);
         } else { //all good to go!
+
+            //request.session.myCart {}
+
             response.redirect("cart.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
         }
     }
-    //READ ME!!!!!
-    //IDK IF SIMPLY REDIRECTING TO THE CART WOULD BE GOOD ENOUGH
 });
-
-//SHOPPING CART CODE//
 
 //checking that data is valid
 //borrowed code from Lab13/Assigment1
@@ -73,7 +75,6 @@ function isNonNegInt(q, returnErrors = false) {
 }
 
 //borrowed from Lab14
-app.use(myParser.urlencoded({ extended: true }));
 
 fs = require('fs'); //loads the node.js file system module
 
@@ -99,8 +100,7 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
 }
 
 //LOGIN CODE//
-//Need to add cookies/sessions
-//Still need to figure it out
+//NEED TO ADD COOKIES FOR LOGIN
 
 //worked with code from Lab14
 app.post("/login.html", function (request, response) {
@@ -112,9 +112,11 @@ app.post("/login.html", function (request, response) {
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
+        response.cookie('username', the_username, { maxAge: 60 * 1000 }).redirect('/index.html?'); //session will last for 10 minutes or 600 seconds then redirected to the home page
         if (users_reg_data[the_username].password == request.body.password) {
             response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
-        } else {
+        }
+        else {
             error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
         }
     }

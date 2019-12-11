@@ -2,6 +2,8 @@
 https://www.youtube.com/watch?v=FEmysQARWFU */
 
 /* STYLES NAVBAR */
+
+/* styles body */
 body {
 	margin: 0;
 	background:white;
@@ -9,11 +11,13 @@ body {
 	font-weight: 800;
 }
 
+/* styles container */
 .container {
 	width: 80%;
 	margin: 0 auto;
 }
 
+/* styles header */
 header {
   background: burlywood;
 }
@@ -24,21 +28,25 @@ header::after {
   clear: both;
 }
 
+/* styles logo */
 .logo {
   float: left;
   padding: 10px 0;
 }
 
+/* have navbar words go to the left */
 nav {
   float: left;
 }
 
+/* styles list */
 nav ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* styles list */
 nav li {
   display: inline-block;
   margin-left: 70px;
@@ -47,6 +55,7 @@ nav li {
   position: relative;
 }
 
+/* navigation change when hover */
 nav a {
   color: #444;
   text-decoration: none;
@@ -54,10 +63,12 @@ nav a {
   font-size: 30px;
 }
 
+/* navigation hover color */
 nav a:hover {
   color: #000;
 }
 
+/* navigation change before hover */
 nav a::before {
   content: '';
   display: block;
