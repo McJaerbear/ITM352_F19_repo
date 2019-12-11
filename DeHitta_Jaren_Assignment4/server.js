@@ -23,7 +23,6 @@ app.all('*', function (request, response, next) { //respond to HTTP request by s
 app.post('/add_to_cart', function (request, response) {
     console.log('add to cart:', request.body);
     response.json("{'result': 'okay'}");
-
 });
 
 //borrowed code from Assignment1 example and added
