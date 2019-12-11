@@ -11,7 +11,6 @@ var user_product_quantities = {}; //defines user_products_quantities as a variab
 //borrowed code from Lab13
 var app = express();
 app.use(myParser.urlencoded({ extended: true }));
-app.use(myParser.json());
 
 //borrowed code from Lab15
 var session = require('express-session'); //EX2 new middleware
@@ -22,37 +21,10 @@ app.all('*', function (request, response, next) { //respond to HTTP request by s
     next(); //calls middleware function
 });
 
-//help from Dr. Port's office hours
+//from Dr. Port's office hours
 app.post('/add_to_cart', function (request, response) {
     console.log('add to cart:', request.body);
-    if (typeof request.session.cart == 'undefined') {
-        request.session.cart = [];
-    }
-    request.session.cart.push(request.body);
     response.json("{'result': 'okay'}");
-});
-
-//help from Prof. Kazman
-app.get ('/modify cart', function (request, response) {
-    console.log('modify cart:', request.body);
-    str = `
-    <body>
-    <form action="" method="POST">`;
-    for (i=0; i < request.session.cart.length; i++){
-        idx = request.session.cart[i].p_index;
-        p_qty = request.session.cart[i].p_quantity;
-        str += `<h2>${products[idx].toy}</h2>`;
-        str += `<img src="${products[idx].image}">`;
-        str += `<p class="price">${products[idx].price}</p>">`;
-        str += `<input type="text" placeholder="${p_qty}" onkeyup="checkQuantityTextbox(this);">`;
-
-        //need to add delete button using splice
-        str += `<input type="checkbox" name="delete_button" id="prodcuts.splice" value="Delete">`;
-    }
-    str += `</form>
-    </body>
-        `;
-        response.send(str);
 });
 
 //borrowed code from Assignment1 example and added
