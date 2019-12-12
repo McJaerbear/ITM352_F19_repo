@@ -11,20 +11,82 @@ var user_product_quantities = {}; //defines user_products_quantities as a variab
 //borrowed code from Lab13
 var app = express();
 app.use(myParser.urlencoded({ extended: true }));
+app.use(myParser.json());
 
 //borrowed code from Lab15
 var session = require('express-session'); //EX2 new middleware
-app.use(session({secret: "ITM352 rocks!"}));
+app.use(session({ secret: "ITM352 rocks!" }));
 
 app.all('*', function (request, response, next) { //respond to HTTP request by sending type of request and the path of request
     console.log(request.method + ' to ' + request.path, request.session.id);
     next(); //calls middleware function
 });
 
-//from Dr. Port's office hours
+//SHOPPING CART CODE//
+
+//help from Dr. Port's office hours
 app.post('/add_to_cart', function (request, response) {
     console.log('add to cart:', request.body);
+    if (typeof request.session.cart == 'undefined') {
+        request.session.cart = [];
+    }
+    request.session.cart.push(request.body);
     response.json("{'result': 'okay'}");
+});
+
+//help from Prof. Kazman
+app.get('/cart.html', function (request, response) {
+    console.log('modify cart:', request.body);
+    str = `
+    <head>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+    <link href="display.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    </head>
+
+    <body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <ui>
+                    <li><a href="./public/index.html">Home</a></li>
+                    <li><a href="./public/about.html">About</a></li>
+                    <li><a href="./public/product_display.html">Products</a></li>
+                    <li><a href="./public/contact.html">Contact</a></li>
+                    <li><a href="./public/login.html">Login</a></li>
+                    <li><a href="./public/registration.html">Get Started</a></li>
+                    <li><a href="./public/cart.html">Cart</a></li>
+                </ui>
+            </nav>
+        </div>
+    </header>
+
+    <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
+
+        <u>
+            <h2>Shopping Cart</h2>
+        </u>
+  
+    <form action="/modify_cart" method="POST">`;
+    for (i = 0; i < request.session.cart.length; i++) {
+        idx = request.session.cart[i].p_index;
+        p_qty = request.session.cart[i].p_quantity;
+        str += `<h2>${products[idx].toy}</h2>`;
+        str += `<img src="${products[idx].image}">`;
+        str += `<p class="price">$${products[idx].price}</p>`;
+        str += `<input type="text" placeholder="${p_qty}" onkeyup="checkQuantityTextbox(this);">`;
+
+        //need to figure out how to add delete button using splice
+        str += `<input type="checkbox" name="delete_button" id="prodcuts.splice" value="Delete">`;
+    }
+    str += `</form>
+    </body>
+        `;
+    response.send(str);
 });
 
 //borrowed code from Assignment1 example and added
@@ -56,9 +118,6 @@ app.get("/process_page", function (request, response) {
             qstr = querystring.stringify(request.query);
             response.redirect("product_display.html?" + qstr);
         } else { //all good to go!
-
-            //request.session.myCart {}
-
             response.redirect("cart.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
         }
     }
@@ -101,7 +160,6 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
 }
 
 //LOGIN CODE//
-//NEED TO ADD COOKIES FOR LOGIN
 
 //worked with code from Lab14
 app.post("/login.html", function (request, response) {

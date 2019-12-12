@@ -89,14 +89,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
 </head>
 
 <body>
-    <script>
-        //NOT TOO SURE ON THE ACTION AND METHOD YET
-        //I THINK ACTION NAME NEEDS TO BE CHANGE IF NEEDED SO NOT THE SAME AS PRODUCT_DISPLAY.HTML
-    </script>
 
     <header>
         <div class="container">
@@ -108,11 +103,12 @@
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="login.html">Login</a></li>
                     <li><a href="registration.html">Get Started</a></li>
-                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="cart">Cart</a></li>
                 </ui>
             </nav>
         </div>
     </header>
+    
     <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
 
     <div>
@@ -131,7 +127,7 @@
                         <input type="text" placeholder="0" id="quantity${i}" 
                         onkeyup="checkQuantityTextbox(this);">     
                 <p><input type="button" value="Add to cart" class="button" name="purchase_submit" 
-                    onclick="add_to_cart(${i}, document.getElementById('quantity${i}').value);"
+                    onclick="add_to_cart(${i}, document.getElementById('quantity${i}').value); return confirm('Added to Cart')"
                     /></p></li>
                         `)
                     }

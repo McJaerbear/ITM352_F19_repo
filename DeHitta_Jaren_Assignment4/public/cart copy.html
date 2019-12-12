@@ -1,0 +1,82 @@
+<script src="./product.js"></script>
+
+<script>
+    //borrowed code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch by MDN contributors
+    async function postData(url = '', data = {}) {
+        //console.log.data//
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'client', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return await response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    //from Dr. Port's office hours
+    function modify_cart(product_index, product_quantity) {
+        console.log(product_index, product_quantity);
+        postData('modify_cart', {
+            'p_index': product_index, 'p_quantity': product_quantity
+        })
+    }
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+    <link href="general.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <ui>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="product_display.html">Products</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="registration.html">Get Started</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ui>
+            </nav>
+        </div>
+    </header>
+
+    <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
+
+        <u>
+            <h2>Shopping Cart</h2>
+        </u>
+  
+    <script>
+        for (i=0; i < request.session.cart.length; i++){
+            document.write(`
+            <h2>${products[idx].toy}</h2>
+            <img src="${products[idx].image}">
+            <p class="price">${products[idx].price}</p>
+            <input type="text" placeholder="${p_qty}" onkeyup="checkQuantityTextbox(this);">
+            `)
+        };
+    </script>
+
+</body>
+
+</html>
