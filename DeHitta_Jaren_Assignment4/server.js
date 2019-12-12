@@ -68,7 +68,7 @@ app.get('/cart', function (request, response) {
 
     <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
         <u>
-            <h3 style="text-align:center">Shopping Cart</h2>
+            <h3 style="text-align:center">Shopping Cart</h3>
         </u>
         <main>
     <form name="for_cart" action="invoice.html" method="GET">`;
@@ -78,7 +78,7 @@ app.get('/cart', function (request, response) {
         str += `<h2 style="text-align:center">${products[idx].toy}</h2>`;
         str += `<h2 style="text-align:center"><img src="${products[idx].image}"></h2>`;
         str += `<h2 style="text-align:center"><p class="price">$${products[idx].price}</p></h2>`;
-        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);" disabled>`;
+        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);"disabled>`;
 
         //need to figure out how to add delete button using splice
        /* str += `<input type="submit" id="deleteButton" value="Delete checked boxes"/>`; */
@@ -177,7 +177,7 @@ app.post("/login.html", function (request, response) {
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
-        response.cookie('username', the_username, { maxAge: 60 * 1000 }).redirect('/product_display.html?'); //session will last for 10 minutes or 600 seconds then redirected to the home page
+        response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
         if (users_reg_data[the_username].password == request.body.password) {
             response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
         }
