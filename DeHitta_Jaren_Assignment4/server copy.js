@@ -35,9 +35,10 @@ app.post('/add_to_cart', function (request, response) {
 });
 
 //help from Prof. Kazman
-app.get('/cart.html', function (request, response) {
+app.get('/cart', function (request, response) {
     console.log('modify cart:', request.body);
     str = `
+    
     <head>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
@@ -53,37 +54,43 @@ app.get('/cart.html', function (request, response) {
         <div class="container">
             <nav>
                 <ui>
-                    <li><a href="./public/index.html">Home</a></li>
-                    <li><a href="./public/about.html">About</a></li>
-                    <li><a href="./public/product_display.html">Products</a></li>
-                    <li><a href="./public/contact.html">Contact</a></li>
-                    <li><a href="./public/login.html">Login</a></li>
-                    <li><a href="./public/registration.html">Get Started</a></li>
-                    <li><a href="./public/cart.html">Cart</a></li>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/product_display.html">Products</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/login.html">Login</a></li>
+                    <li><a href="/registration.html">Get Started</a></li>
+                    <li><a href="/cart">Cart</a></li>
                 </ui>
             </nav>
         </div>
     </header>
 
     <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
-
         <u>
-            <h2>Shopping Cart</h2>
+            <h3 style="text-align:center">Shopping Cart</h3>
         </u>
-  
-    <form action="/modify_cart" method="POST">`;
+        <main>
+    <form action="invoice.html" method="GET">`;
     for (i = 0; i < request.session.cart.length; i++) {
         idx = request.session.cart[i].p_index;
         p_qty = request.session.cart[i].p_quantity;
-        str += `<h2>${products[idx].toy}</h2>`;
-        str += `<img src="${products[idx].image}">`;
-        str += `<p class="price">$${products[idx].price}</p>`;
-        str += `<input type="text" placeholder="${p_qty}" onkeyup="checkQuantityTextbox(this);">`;
+        str += `<h2 style="text-align:center">${products[idx].toy}</h2>`;
+        str += `<h2 style="text-align:center"><img src="${products[idx].image}"></h2>`;
+        str += `<h2 style="text-align:center"><p class="price">$${products[idx].price}</p></h2>`;
+        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);">`;
 
         //need to figure out how to add delete button using splice
-        str += `<input type="checkbox" name="delete_button" id="prodcuts.splice" value="Delete">`;
+       /* str += `<input type="submit" id="deleteButton" value="Delete checked boxes"/>`; */
     }
-    str += `</form>
+    str += `
+    </main>
+    <footer>
+        <div>
+            <h2 style="text-align:center"><strong><input type="submit" value="Purchase!" name="purchase_submit"></strong></h2>
+        </div> 
+        </form>  
+    </footer>
     </body>
         `;
     response.send(str);
@@ -91,7 +98,7 @@ app.get('/cart.html', function (request, response) {
 
 //borrowed code from Assignment1 example and added
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
-app.get("/process_page", function (request, response) {
+app.get("/invoice.html", function (request, response) {
     //quantity data in query string
     user_product_quantities = request.query;
     //check if quantity data is valid
@@ -116,9 +123,9 @@ app.get("/process_page", function (request, response) {
         if (has_errors || total_qty == 0) {
             //if quantity data is not valid, send them back to product display
             qstr = querystring.stringify(request.query);
-            response.redirect("product_display.html?" + qstr);
+            response.redirect("index.html?" + qstr);
         } else { //all good to go!
-            response.redirect("cart.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
+            response.redirect("invoice.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
         }
     }
 });
@@ -171,9 +178,9 @@ app.post("/login.html", function (request, response) {
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
-        response.cookie('username', the_username, { maxAge: 60 * 1000 }).redirect('/index.html?'); //session will last for 10 minutes or 600 seconds then redirected to the home page
         if (users_reg_data[the_username].password == request.body.password) {
-            response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
+            /* response.cookie('username', the_username, { maxAge: 600 * 1000 }); */ //session will last for 10 minutes or 600 seconds then redirected to the home page
+            response.redirect('product_display.html?' + `&username=${the_username}`); //if all good, send back to index page
         }
         else {
             error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
@@ -252,7 +259,6 @@ app.post("/registration.html", function (request, response) {
         response.redirect('/registration.html?' + qstring); //if there are errors, send back to registration page to retype
     }
 });
-
 
 //borrowed code from Lab13
 app.use(express.static('./public'));

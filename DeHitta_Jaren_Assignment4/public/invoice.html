@@ -10,11 +10,11 @@
         alert(`thank you for your purchase ${params.get('username')}`);
     }
     //send message that they must login or register before they can be sent to the invoice
-    else{
+    /*else{
         alert('you must login or register first');
         window.location = 'login.html';
         window.stop();
-    }
+    }*/
     var quantities = [];
     if (params.has('purchase_submit')) {
         for (i = 0; i < products.length; i++) {

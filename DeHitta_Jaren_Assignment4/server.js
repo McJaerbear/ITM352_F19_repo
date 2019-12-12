@@ -123,9 +123,9 @@ app.get("/invoice.html", function (request, response) {
         if (has_errors || total_qty == 0) {
             //if quantity data is not valid, send them back to product display
             qstr = querystring.stringify(request.query);
-            response.redirect("cart" + qstr);
+            response.redirect("cart?" + qstr);
         } else { //all good to go!
-            response.redirect("invoice.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
+            response.redirect("login.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
         }
     }
 });
@@ -178,9 +178,9 @@ app.post("/login.html", function (request, response) {
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
-        response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
         if (users_reg_data[the_username].password == request.body.password) {
-            response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
+            response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
+            response.redirect('product_display.html?' + `&username=${the_username}`); //if all good, send back to index page
         }
         else {
             error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
