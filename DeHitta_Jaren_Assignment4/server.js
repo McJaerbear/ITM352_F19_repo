@@ -71,7 +71,7 @@ app.get('/cart', function (request, response) {
             <h3 style="text-align:center">Shopping Cart</h3>
         </u>
         <main>
-    <form name="for_cart" action="invoice.html" method="GET">`;
+    <form action="invoice.html" method="GET">`;
     for (i = 0; i < request.session.cart.length; i++) {
         idx = request.session.cart[i].p_index;
         p_qty = request.session.cart[i].p_quantity;
