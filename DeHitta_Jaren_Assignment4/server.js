@@ -78,17 +78,18 @@ app.get('/cart', function (request, response) {
         str += `<h2 style="text-align:center">${products[idx].toy}</h2>`;
         str += `<h2 style="text-align:center"><img src="${products[idx].image}"></h2>`;
         str += `<h2 style="text-align:center"><p class="price">$${products[idx].price}</p></h2>`;
-        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);"disabled>`;
+        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);">`;
 
         //need to figure out how to add delete button using splice
        /* str += `<input type="submit" id="deleteButton" value="Delete checked boxes"/>`; */
     }
-    str += `</form>  
+    str += `
     </main>
     <footer>
         <div>
             <h2 style="text-align:center"><strong><input type="submit" value="Purchase!" name="purchase_submit"></strong></h2>
         </div> 
+        </form>  
     </footer>
     </body>
         `;
