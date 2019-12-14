@@ -15,7 +15,7 @@ app.use(myParser.json());
 
 //borrowed code from Lab15
 var session = require('express-session'); //EX2 new middleware
-app.use(session({ secret: "ITM352 rocks!" }));
+app.use(session({ secret: "ITM352 rocks!" })); //use sessions
 
 app.all('*', function (request, response, next) { //respond to HTTP request by sending type of request and the path of request
     console.log(request.method + ' to ' + request.path, request.session.id);
@@ -25,6 +25,7 @@ app.all('*', function (request, response, next) { //respond to HTTP request by s
 //SHOPPING CART CODE//
 
 //help from Dr. Port's office hours
+//creates session for when "loading" items in webpage
 app.post('/add_to_cart', function (request, response) {
     console.log('add to cart:', request.body);
     if (typeof request.session.cart == 'undefined') {
@@ -34,9 +35,10 @@ app.post('/add_to_cart', function (request, response) {
     response.json("{'result': 'okay'}");
 });
 
-//help from Prof. Kazman
+//help from Prof. Kazman's office hours --> for loop
 app.get('/cart', function (request, response) {
     console.log('modify cart:', request.body);
+    //creates a string
     str = `
     
     <head>
@@ -72,16 +74,14 @@ app.get('/cart', function (request, response) {
         </u>
         <main>
     <form action="invoice.html" method="GET">`;
+    //for loop gets item quantity from products_display and saves it for the cart
     for (i = 0; i < request.session.cart.length; i++) {
         idx = request.session.cart[i].p_index;
         p_qty = request.session.cart[i].p_quantity;
         str += `<h2 style="text-align:center">${products[idx].toy}</h2>`;
         str += `<h2 style="text-align:center"><img src="${products[idx].image}"></h2>`;
         str += `<h2 style="text-align:center"><p class="price">$${products[idx].price}</p></h2>`;
-        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);">`;
-
-        //need to figure out how to add delete button using splice
-       /* str += `<input type="submit" id="deleteButton" value="Delete checked boxes"/>`; */
+        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);"disabled>`;
     }
     str += `
     </main>
@@ -93,7 +93,7 @@ app.get('/cart', function (request, response) {
     </footer>
     </body>
         `;
-    response.send(str);
+    response.send(str); //send string
 });
 
 //borrowed code from Assignment1 example and added
@@ -180,7 +180,7 @@ app.post("/login.html", function (request, response) {
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
         if (users_reg_data[the_username].password == request.body.password) {
             response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
-            response.redirect('product_display.html?' + `&username=${the_username}`); //if all good, send back to index page
+            response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
         }
         else {
             error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
@@ -197,8 +197,6 @@ app.post("/login.html", function (request, response) {
 );
 
 //REGISTRATION CODE//
-//DONE because I already have validation done and I will just redirect them to login after registering
-//Cookies and session will occur in the LOGIN CODE above
 
 //worked with code from Lab14
 app.post("/registration.html", function (request, response) {
@@ -261,5 +259,7 @@ app.post("/registration.html", function (request, response) {
 });
 
 //borrowed code from Lab13
+//will go grab files from public folder
 app.use(express.static('./public'));
+//use port 8080
 app.listen(8080, () => console.log(`listening on port 8080`));

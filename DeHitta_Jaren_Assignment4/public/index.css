@@ -1,3 +1,5 @@
+/* CSS for all pages that have navbar (i.e., all pages except invoice)
+
 /* borrowed from Kevin Powell 
 https://www.youtube.com/watch?v=FEmysQARWFU */
 
@@ -17,11 +19,12 @@ body {
 	margin: 0 auto;
 }
 
-/* styles header */
+/* styles header; color */
 header {
   background: burlywood;
 }
 
+/* styles header */
 header::after {
   content: '';
   display: table;
@@ -74,14 +77,13 @@ nav a::before {
   display: block;
   height: 5px;
   background-color: #444;
-
   position: absolute;
   top: 0;
   width: 0%;
-
   transition: all ease-in-out 250ms;
 }
 
+/* navigation change width of hover hover */
 nav a:hover::before {
   width: 100%;
 }

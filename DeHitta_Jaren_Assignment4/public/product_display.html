@@ -1,25 +1,5 @@
 <script src="./product.js"></script>
 
-
-<script>
-    /*
-        let params = (new URL(document.location)).searchParams; //searching for params in a new URL document location
-        //getting the quantity amount from product.js for each data inputted
-        
-        //pop-up message when usccesful login occurs 
-        //will show up before loading to invoice.html
-        if(params.has('username')){ //
-            alert(`Hello ${params.get('username')}`);
-        }
-        //send message that they must login or register before they can be sent to the invoice
-        else{
-            alert('You Must Login or Register First');
-            window.location = 'login.html';
-            window.stop();
-        }
-        */
-    </script>
-
 <script>
     //borrowed code from Assignment 1 example
     function isNonNegInt(q, return_errors = false) {
@@ -40,26 +20,28 @@
     }
 
     //borrowed code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch by MDN contributors
+    //using fetch to POST JSON data from products_display page to save in server array
     async function postData(url = '', data = {}) {
         //console.log.data//
-            // Default options are marked with *
-            const response = await fetch(url, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrer: 'client', // no-referrer, *client
-                body: JSON.stringify(data) // body data type must match "Content-Type" header
-            });
-            return await response.json(); // parses JSON response into native JavaScript objects
-        }
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'client', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return await response.json(); // parses JSON response into native JavaScript objects
+    }
 
     //from Dr. Port's office hours
+    //creates function add_to_cart for product index and product quantity
     function add_to_cart(product_index, product_quantity) {
         console.log(product_index, product_quantity);
         postData('add_to_cart', {
@@ -128,7 +110,7 @@
             </nav>
         </div>
     </header>
-    
+
     <h1 style="text-align:center">Jaren's Stuffed Animal Store</h1>
 
     <div>
@@ -146,7 +128,7 @@
                 <label id="quantity${i}_label"}">Quantity:</label>
                         <input type="text" placeholder="0" id="quantity${i}" 
                         onkeyup="checkQuantityTextbox(this);">     
-                <p><input type="button" value="Add to cart" class="button" name="purchase_submit" 
+                <p><input type="button" value="Add to cart" class="button" name="purchase" 
                     onclick="add_to_cart(${i}, document.getElementById('quantity${i}').value); return confirm('Added to Cart')"
                     /></p></li>
                         `)
@@ -155,7 +137,7 @@
             </main>
         </ul>
     </div>
-    </form>
+
 </body>
 
 </html>

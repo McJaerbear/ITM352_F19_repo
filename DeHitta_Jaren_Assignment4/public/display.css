@@ -1,7 +1,9 @@
+/* CSS for products_display and cart */
+
 /* borrowed from w3schools
 /* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_product_card */
 
-/* syles products being displayed */
+/* syles products being displayed inside the div= "card"*/
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   max-width: 300px;
@@ -13,7 +15,7 @@
   margin-bottom: 10px;
 }
 
-/* styles price */
+/* styles price shown */
 .price {
   color: grey;
   font-size: 22px;
@@ -39,7 +41,7 @@ input[type=button] {
 
 /* borrowed up till here */
 
-/* styles heading 1*/
+/* styles heading 1 */
 h1 {
   margin-top: 60px;
   margin-bottom: 40px;
@@ -76,7 +78,7 @@ body{
   background-image: url(/images/tile.jpg);
 }
 
-/* purchase button */
+/* styles purchase button */
 input[type=submit] {
   width: 7em;  height: 2em;
   font-size: 20px;
@@ -84,6 +86,7 @@ input[type=submit] {
   float: none;
 }
 
+/* syles heading 3 */
 h3 {
   margin-top: 1px;
   font-size: 40px;

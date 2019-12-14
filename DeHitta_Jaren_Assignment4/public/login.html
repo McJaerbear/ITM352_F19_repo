@@ -15,7 +15,7 @@
   <script src="./product.js"></script>
   <script>
     let params = (new URL(document.location)).searchParams; //searching for params in a new URL document location
-    if (params.has("LoginError")) {
+    if (params.has("LoginError")) {//if there are errors, show errors Invalid Username/Password from server.js
       alert(params.get("LoginError"));
     }
   </script>

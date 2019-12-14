@@ -20,6 +20,7 @@
         }
     
         //borrowed code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch by MDN contributors
+        //using fetch to POST JSON data from products_display page to save in server array
         async function postData(url = '', data = {}) {
             //console.log.data//
                 // Default options are marked with *
@@ -38,14 +39,6 @@
                 });
                 return await response.json(); // parses JSON response into native JavaScript objects
             }
-    
-        //from Dr. Port's office hours
-        function add_to_cart(product_index, product_quantity) {
-            console.log(product_index, product_quantity);
-            postData('add_to_cart', {
-                'p_index': product_index, 'p_quantity': product_quantity
-            })
-        }
     
         //borrowed code from Assignment 1 example
         window.onload = function () {

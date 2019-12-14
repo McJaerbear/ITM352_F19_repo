@@ -1,3 +1,5 @@
+/* CSS that syles most of the general pages (i.e., index, about, contact page) */
+
 /* Header/Blog Title */
 .header {
   padding: 30px;
@@ -61,14 +63,14 @@ img {
   color:black;
 }
 
-/* styles heading 4 within the div secion */
+/* styles heading 5 within the div secion */
 .card h5 {
   font-size: 25px;
   line-height: 40px;
   color:black;
 }
 
-/* styles heading 1 */
+/* styles regular heading 1 */
 h1 {
     margin-top: 60px;
     margin-bottom: 10px;
