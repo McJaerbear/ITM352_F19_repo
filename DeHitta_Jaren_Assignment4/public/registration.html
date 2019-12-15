@@ -2,11 +2,11 @@
   window.onload = function () {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("username")) { //gets username data and displays in URL
-      forms.fullname.value = urlParams.get("fullname");
-      forms.username.value = urlParams.get("username");
-      forms.email.value = urlParams.get("email");
-      forms.password.value = urlParams.get("password");
-      forms.repeat_password.value = urlParams.get("repeat_password");
+      forms.fullname.value = urlParams.get("fullname"); //gets fullname value from server
+      forms.username.value = urlParams.get("username"); //gets username value from server
+      forms.email.value = urlParams.get("email"); //gets email value from serer
+      forms.password.value = urlParams.get("password"); //get password value from server
+      forms.repeat_password.value = urlParams.get("repeat_password"); //gets repeat_password from server
 
       if (urlParams.has("username_error")) { //if there are username errors, get username errors and display in URL
         username_label.innerHTML = urlParams.get("username_error");

@@ -3,6 +3,32 @@
 
 <script src="./product.js" type=""></script>
 
+<script>
+        let params = (new URL(document.location)).searchParams; //searching for params in a new URL document location
+        //getting the quantity amount from product.js for each data inputted
+        
+        //pop-up message when usccesful login occurs 
+        //will show up before loading to invoice.html
+        if(params.has('username')){ //
+            alert(`thank you for your purchase ${params.get('username')}`);
+        }
+        //send message that they must login or register before they can be sent to the invoice
+        /*else{
+            alert('you must login or register first');
+            window.location = 'login.html';
+            window.stop();
+        }*/
+        var quantities = [];
+        if (params.has('purchase_submit')) {
+            for (i = 0; i < products.length; i++) {
+                if (params.has(`quantity${i}`)) {
+                    a_qty = params.get(`quantity${i}`);
+                    quantities[i] = a_qty;
+                }
+            }
+        }
+    </script>
+
 <head>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600" rel="stylesheet">
     <link href="index.css" rel="stylesheet">

@@ -9,9 +9,9 @@ var qs = require('querystring'); //querystring needed in order to initiate funct
 var user_product_quantities = {}; //defines user_products_quantities as a variable that requests the query string of product quantity
 
 //borrowed code from Lab13
-var app = express();
+var app = express(); //variable for express
 app.use(myParser.urlencoded({ extended: true }));
-app.use(myParser.json());
+app.use(myParser.json()); //use json
 
 //borrowed code from Lab15
 var session = require('express-session'); //EX2 new middleware
@@ -26,19 +26,21 @@ app.all('*', function (request, response, next) { //respond to HTTP request by s
 
 //help from Dr. Port's office hours
 //creates session for when "loading" items in webpage
+//add_to_cart is a function in the products_page
 app.post('/add_to_cart', function (request, response) {
     console.log('add to cart:', request.body);
-    if (typeof request.session.cart == 'undefined') {
+    if (typeof request.session.cart == 'undefined') { //if there's nothing in the cart, show blank
         request.session.cart = [];
     }
-    request.session.cart.push(request.body);
+    request.session.cart.push(request.body); //push json file information
     response.json("{'result': 'okay'}");
 });
 
 //help from Prof. Kazman's office hours --> for loop
 app.get('/cart', function (request, response) {
-    console.log('modify cart:', request.body);
+    console.log('modify cart:', request.body); //modify cart is supposed to be a function to allow user to change quantity, but I was unsuccessful
     //creates a string
+    //putting cart page here
     str = `
     
     <head>
@@ -76,12 +78,12 @@ app.get('/cart', function (request, response) {
     <form action="invoice.html" method="GET">`;
     //for loop gets item quantity from products_display and saves it for the cart
     for (i = 0; i < request.session.cart.length; i++) {
-        idx = request.session.cart[i].p_index;
-        p_qty = request.session.cart[i].p_quantity;
-        str += `<h2 style="text-align:center">${products[idx].toy}</h2>`;
-        str += `<h2 style="text-align:center"><img src="${products[idx].image}"></h2>`;
-        str += `<h2 style="text-align:center"><p class="price">$${products[idx].price}</p></h2>`;
-        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);"disabled>`;
+        idx = request.session.cart[i].p_index; //saves product_info --> p_index as variable idx
+        p_qty = request.session.cart[i].p_quantity; //saves product_quantity --> p_index as variable p_quantity
+        str += `<h2 style="text-align:center">${products[idx].toy}</h2>`; //show name of product in cart when added
+        str += `<h2 style="text-align:center"><img src="${products[idx].image}"></h2>`; //show image of product in cart when added
+        str += `<h2 style="text-align:center"><p class="price">$${products[idx].price}</p></h2>`; //show price of product in cart when added
+        str += `<label>Quantity:   </label><input type="text" value="${p_qty}" onkeyup="checkQuantityTextbox(this);"disabled>`; //displays quantity chosen from products_display page and show here
     }
     str += `
     </main>
@@ -96,36 +98,37 @@ app.get('/cart', function (request, response) {
     response.send(str); //send string
 });
 
-//borrowed code from Assignment1 example and added
+//borrowed code from Assignment1 example from Dr. Port and added
 //intercept purchase submission form, if good give an invoice, otherwise send back to order page
-app.get("/invoice.html", function (request, response) {
+//Note: Unsuccessful when trying to send invoice, just redirects to cart again
+app.get("/invoice.html", function (request, response) { //get invoice page
     //quantity data in query string
     user_product_quantities = request.query;
     //check if quantity data is valid
     params = request.query;
     console.log(params);
     if (typeof params['purchase_submit'] != 'undefined') {
-        has_errors = false; //assume quantities are valid from the start
+        has_errors = false; //assume that the quantities are valid
         total_qty = 0; //need to check if something was selected so we will look if the total > 0
         for (i = 0; i < products.length; i++) { //checking each of the products in the array
-            if (typeof params[`quantity${i}`] != 'undefined') {  //if not undefined then move on to the next if statement
+            if (typeof params[`quantity${i}`] != 'undefined') {  //quantity is not undefined, then go to next statement
                 a_qty = params[`quantity${i}`];
                 total_qty += a_qty;
                 if (!isNonNegInt(a_qty)) {
-                    has_errors = true; //oops, invalid quantity
+                    has_errors = true; //if data is invalid
                 }
             }
         }
         console.log(has_errors, total_qty);
         //request to look at query list/data
         qstr = querystring.stringify(request.query);
-        //now respond to errors or redirect to invoice if all is ok
+        //respond to errors
         if (has_errors || total_qty == 0) {
-            //if quantity data is not valid, send them back to product display
+            //if quantity data is not valid, send them back to cart page
             qstr = querystring.stringify(request.query);
             response.redirect("cart?" + qstr);
         } else { //all good to go!
-            response.redirect("login.html?" + qstr); //if quantity data is valid, transfer data to cart(still neec to do this)
+            response.redirect("invoice.html?" + qstr); //if quantity data is valid send to invoice page
         }
     }
 });
@@ -167,18 +170,17 @@ if (fs.existsSync(filename)) { //we load in users_reg_data from the json file
 }
 
 //LOGIN CODE//
-
 //worked with code from Lab14
 app.post("/login.html", function (request, response) {
     //process login form POST and redirect to logged in page if ok, back to login page if not
     //if I have post, below will load
     console.log(user_product_quantities);
-    the_username = request.body.username;
+    the_username = request.body.username; //define the_username, request username 
     the_username = request.body.username.toLowerCase(); //makes username case insensitive
     console.log(the_username, "Username is", typeof (users_reg_data[the_username]));
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
-        if (users_reg_data[the_username].password == request.body.password) {
+        if (users_reg_data[the_username].password == request.body.password) { //making sure that the password inputted is the same as password saved in the user data
             response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
             response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
         }
@@ -197,15 +199,14 @@ app.post("/login.html", function (request, response) {
 );
 
 //REGISTRATION CODE//
-
 //worked with code from Lab14
 app.post("/registration.html", function (request, response) {
     //process a simple register form
     console.log(user_product_quantities);
 
     //variable for re-enter password validation
-    var p = request.body.password;
-    var cp = request.body.repeat_password;
+    var p = request.body.password; //variable for password
+    var cp = request.body.repeat_password; //variable for repeat password
 
     username = request.body.username; //save new user to file name (users_reg_data)
     username = request.body.username.toLowerCase(); //makes username case insensitive
