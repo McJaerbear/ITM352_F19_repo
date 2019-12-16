@@ -4,6 +4,7 @@ const querystring = require('querystring'); //require that the server responds t
 var fs = require('fs'); //variable for loading the node.js file system module
 var express = require('express'); //express package; allows us to use tools from express
 var myParser = require("body-parser"); //takes query string
+var cookieParser = require('cookie-parser');
 var products = require("./public/product.js"); //take data from products.js in the public folder
 var qs = require('querystring'); //querystring needed in order to initiate functions
 var user_product_quantities = {}; //defines user_products_quantities as a variable that requests the query string of product quantity
@@ -21,6 +22,7 @@ app.all('*', function (request, response, next) { //respond to HTTP request by s
     console.log(request.method + ' to ' + request.path, request.session.id);
     next(); //calls middleware function
 });
+app.use(cookieParser());
 
 //SHOPPING CART CODE//
 
@@ -181,8 +183,10 @@ app.post("/login.html", function (request, response) {
     //validate login data
     if (typeof users_reg_data[the_username] != 'undefined') { //data we loaded in the file
         if (users_reg_data[the_username].password == request.body.password) { //making sure that the password inputted is the same as password saved in the user data
-            response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
-            response.redirect('index.html?' + `&username=${the_username}`); //if all good, send back to index page
+            /*response.cookie('username', the_username, { maxAge: 600 * 1000 }); //session will last for 10 minutes or 600 seconds then redirected to the home page
+            response.redirect('index.html?' + `&username=${the_username}`); */ //if all good, send back to index page
+            response.cookie('username', the_username, { maxAge: 60 * 1000 * 10 }).redirect("/index.html?");
+            return;
         }
         else {
             error = "Invalid Password"; //if password does not exist, will show message (connected to login page)
@@ -191,7 +195,7 @@ app.post("/login.html", function (request, response) {
     else {
         error = "Invalid Username"; //if username does not exit, will show message (connected to login page)
     }
-    request.query.LoginError = error;
+    request.query.error = error; 
     request.query.StickyLoginUser = the_username;
     qstring = querystring.stringify(request.query);
     response.redirect('/login.html?error=' + error);//if username doesn't exist then return to login page (with alert box)
@@ -205,8 +209,8 @@ app.post("/registration.html", function (request, response) {
     console.log(user_product_quantities);
 
     //variable for re-enter password validation
-    var p = request.body.password; //variable for password
-    var cp = request.body.repeat_password; //variable for repeat password
+    var p = request.body.password; //variable for password, p for password
+    var cp = request.body.repeat_password; //variable for repeat password, cp for check password
 
     username = request.body.username; //save new user to file name (users_reg_data)
     username = request.body.username.toLowerCase(); //makes username case insensitive
