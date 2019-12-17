@@ -15,7 +15,7 @@ products =
         "price": 8.00,
         "image": "./images/turtle.jpg"
     },
-    {
+    { 
         "toy": "Penguin Stuffed Animal",
         "price": 9.00,
         "image": "./images/penguin.jpg"
